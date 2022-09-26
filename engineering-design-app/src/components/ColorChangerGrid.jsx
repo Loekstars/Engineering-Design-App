@@ -2,7 +2,7 @@ import React from 'react'
 import Stack from '@mui/material/Stack';
 import Slider from '@mui/material/Slider';
 
-const LampSettings = () => {
+const ColorChangerGrid = () => {
     const [value, setValue] = React.useState(30);
 
     const handleChange = (event, newValue) => {
@@ -17,4 +17,4 @@ const LampSettings = () => {
   )
 }
 
-export default LampSettings
+export default ColorChangerGrid
