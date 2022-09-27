@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 
 app.get("/", (req, res) => {
   const sql =
-    "INSERT INTO sensor_data (sensor_id, sensor_measurement, light_intensity) VALUES (1, 20, 80)";
+    "INSERT INTO sensor_data (sensor_id, sensor_measurement, light_intensity_lamp) VALUES (1, 20, 80)";
   db.query(sql, (err, result) => {;
     console.log(err);
     res.send("Hello World!");

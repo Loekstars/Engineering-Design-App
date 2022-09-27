@@ -72,6 +72,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### First time setup
 
 Download XAMP
+(not needed) myswl workbench
 npm install
 
 ### Setup
