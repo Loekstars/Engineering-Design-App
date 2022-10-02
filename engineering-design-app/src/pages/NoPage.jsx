@@ -3,7 +3,7 @@ import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturi
 
 const NoPage = () => {
   return (
-    <div class="text-center pt-16">
+    <div class="text-center pt-16 h-screen">
       <PrecisionManufacturingIcon style={{ fontSize: 100 }} />
       <h1 class="text-9xl">404</h1>
       <h2 class="text-6xl">Page Not Found</h2>

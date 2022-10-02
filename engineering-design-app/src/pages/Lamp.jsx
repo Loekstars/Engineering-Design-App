@@ -9,13 +9,15 @@ const Lamp = () => {
 
   return (
     <div className="App">
-      <div class="flex flex-col items-center">
+      <div class="flex flex-col h-screen items-center">
         <div id="Information" class="flex flex-col w-3/4 items-center">
           <div id="Information-Title" class="pt-16 pb-8">
             <p class="font-nunito">Bedroom Light</p>
             <div className="Color-Preview" />
-            <LightbulbIcon style={{ fontSize: 40, color: `${CirclePickerColor}` }} />
-          </div>
+              <button>
+                <LightbulbIcon style={{ fontSize: 40, color: `${CirclePickerColor}` }} />
+              </button>
+            </div>
           <div id="Information-Content" class="pb-16">
             <CirclePicker
               color={CirclePickerColor}
