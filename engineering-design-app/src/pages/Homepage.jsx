@@ -2,11 +2,20 @@ import React from "react";
 
 //TODO : Set state of on-offtoggle-state-ON/OFF
 
+const lightStates = new Array(3).fill(false);
+
 const Homepage = () => {
-  
   const [toggle, setToggle] = React.useState(false);
 
-  const handleClick = () => setToggle(!toggle);
+  //TODO : Fix status
+  const handleClick = () => {
+    setToggle(!toggle);
+
+    if (lightStates.every((element) => element === true)) {
+    }
+  };
+
+  const editMode = () => {};
 
   return (
     <div classname="App">
@@ -18,14 +27,17 @@ const Homepage = () => {
           >
             <div class="pt-3 font-light w-full text-xl text-left pl-1 pr-1">
               <div class="flex justify-between">
-                <div class="w-24">Statistics</div>
-                <button class="text-widget-blue text-xs place-text-center w-10 align-end font-thin" href="#">
-                  Details
+                <div class="w-44">Statistics Summary</div>
+                <button
+                  class="text-widget-blue text-xs place-text-center w-10 align-end font-thin focus:none"
+                  
+                >
+                  <a href="/Statistics">Details</a>
                 </button>
               </div>
             </div>
             <div class="grid grid-cols-3 items-center gap-4 h-28">
-              <div class="w-28 h-28 outline outline-offset-2 outline-1 outline-gray-200 p-2 rounded-lg drop-shadow-2xl">
+              <div class="w-28 h-28 outline outline-offset-0 bg-white outline-1 outline-gray-200 p-2 rounded-lg drop-shadow-md">
                 <div
                   classname="Symbol-widget-1"
                   class="flex flex-auto justify-center items-center h-10"
@@ -38,11 +50,12 @@ const Homepage = () => {
                   Today's Power Savings
                 </div>
               </div>
-              <div class="w-28 h-28 outline outline-offset-2 outline-1 outline-gray-200 p-2 rounded-lg drop-shadow-2xl">
+              <div class="w-28 h-28 outline bg-white outline-1 outline-gray-200 p-2 rounded-lg drop-shadow-md">
                 <div
                   classname="Symbol-widget-2"
-                  class="flex flex-auto justify-center items-center h-10"
+                  class="flex flex-auto justify-center items-center pt-2 h-10"
                 >
+                  {/* On off SVG's */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="48"
@@ -50,7 +63,7 @@ const Homepage = () => {
                     fill="none"
                     viewBox="0 0 48 27"
                     classname="on-offtoggle-state-ON"
-                    style={{display: toggle ? "none" : "block"}}
+                    style={{ display: toggle ? "none" : "block" }}
                   >
                     <path
                       fill="#2057FF"
@@ -64,7 +77,7 @@ const Homepage = () => {
                     fill="none"
                     viewBox="0 0 63 27"
                     classname="on-offtoggle-state-OFF"
-                    style={{display: toggle ? "block" : "none"}}
+                    style={{ display: toggle ? "block" : "none" }}
                   >
                     <path
                       fill="#2057FF"
@@ -73,9 +86,9 @@ const Homepage = () => {
                   </svg>
                 </div>
 
-                <div class="text-xs pt-3 h-14 text-center">Light status</div>
+                <div class="text-xs pt-5 h-14 text-center">Light status</div>
               </div>
-              <div class="w-28 h-28 outline outline-offset-2 outline-1 outline-gray-200 p-2 rounded-lg drop-shadow-2xl">
+              <div class="w-28 h-28 outline bg-white outline-1 outline-gray-200 p-2 rounded-lg drop-shadow-md">
                 <div
                   classname="Symbol-widget-3"
                   class="flex flex-auto justify-center items-center h-10"
@@ -100,15 +113,38 @@ const Homepage = () => {
           </div>
           <div
             id="controls-widget"
-            class="flex flex-col h-38 items-center pb-2 bg-slate-200/50 rounded-2xl"
+            class="flex flex-col h-48 items-center pb-2 bg-slate-200/50 rounded-2xl"
           >
-            <div class="font-light w-full text-xl text-left pl-6 p-2 rounded-t-2xl bg-slate-300/50">
-              Lights
+            <div class="font-light w-full text-xl text-left pl-4 p-2 rounded-t-2xl bg-slate-300/50">
+              <div class="flex justify-between">
+                <div class="w-24">Lights</div>
+                <button class="w-6 align-end font-thin" onClick={editMode}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
-            <div class="grid grid-cols-3 items-center gap-4 h-28">
+            <div class="grid grid-cols-3 items-center gap-4 h-28 pt-6">
               <button
                 classname="button-light-1"
-                class="w-24 h-24 outline outline-offset-2 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg drop-shadow-2xl"
+                class="w-24 h-24 outline outline-offset-0 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
                 onClick={handleClick}
               >
                 <div
@@ -117,17 +153,14 @@ const Homepage = () => {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="54"
-                    height="54"
+                    width="35"
+                    height="49"
                     fill="none"
-                    viewBox="0 0 54 54"
+                    viewBox="0 0 35 49"
                   >
                     <path
-                      stroke="#2057FF"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M27 40.5V28.687m0 0a13.52 13.52 0 0 0 3.375-.425M27 28.687a13.52 13.52 0 0 1-3.375-.425m8.438 16.826a27.15 27.15 0 0 1-10.126 0m8.438 5.361a32.416 32.416 0 0 1-6.75 0m8.438-9.949v-.432c0-2.212 1.48-4.102 3.392-5.211a16.874 16.874 0 1 0-16.913 0c1.913 1.11 3.395 3 3.395 5.211v.432"
+                      fill="#2057FF"
+                      d="m22.947 47.272-11.375-2.625a.875.875 0 0 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706Zm0-3.5-11.375-2.625a.875.875 0 1 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706Zm0-3.5-11.375-2.625a.875.875 0 1 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706ZM17.5 0C7.85 0 0 7.85 0 17.5c0 6.492 3.68 12.531 9.42 15.526l.173 2.439a.868.868 0 0 0 .936.81.875.875 0 0 0 .81-.935l-.21-2.934a.874.874 0 0 0-.49-.725C5.238 29.064 1.75 23.497 1.75 17.5c0-8.684 7.065-15.75 15.75-15.75 8.684 0 15.75 7.066 15.75 15.75a15.71 15.71 0 0 1-9.745 14.566.875.875 0 0 0-.538.746l-.381 5.327a.875.875 0 0 0 1.746.124l.342-4.796A17.451 17.451 0 0 0 35 17.5C35 7.85 27.15 0 17.5 0Z"
                     />
                   </svg>
                 </div>
@@ -135,7 +168,7 @@ const Homepage = () => {
               </button>
               <button
                 classname="button-light-2"
-                class="w-24 h-24 outline outline-offset-2 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg drop-shadow-2xl"
+                class="w-24 h-24 outline outline-offset-0 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
                 onClick={handleClick}
               >
                 <div
@@ -144,17 +177,14 @@ const Homepage = () => {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="54"
-                    height="54"
+                    width="35"
+                    height="49"
                     fill="none"
-                    viewBox="0 0 54 54"
+                    viewBox="0 0 35 49"
                   >
                     <path
-                      stroke="#2057FF"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M27 40.5V28.687m0 0a13.52 13.52 0 0 0 3.375-.425M27 28.687a13.52 13.52 0 0 1-3.375-.425m8.438 16.826a27.15 27.15 0 0 1-10.126 0m8.438 5.361a32.416 32.416 0 0 1-6.75 0m8.438-9.949v-.432c0-2.212 1.48-4.102 3.392-5.211a16.874 16.874 0 1 0-16.913 0c1.913 1.11 3.395 3 3.395 5.211v.432"
+                      fill="#2057FF"
+                      d="m22.947 47.272-11.375-2.625a.875.875 0 0 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706Zm0-3.5-11.375-2.625a.875.875 0 1 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706Zm0-3.5-11.375-2.625a.875.875 0 1 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706ZM17.5 0C7.85 0 0 7.85 0 17.5c0 6.492 3.68 12.531 9.42 15.526l.173 2.439a.868.868 0 0 0 .936.81.875.875 0 0 0 .81-.935l-.21-2.934a.874.874 0 0 0-.49-.725C5.238 29.064 1.75 23.497 1.75 17.5c0-8.684 7.065-15.75 15.75-15.75 8.684 0 15.75 7.066 15.75 15.75a15.71 15.71 0 0 1-9.745 14.566.875.875 0 0 0-.538.746l-.381 5.327a.875.875 0 0 0 1.746.124l.342-4.796A17.451 17.451 0 0 0 35 17.5C35 7.85 27.15 0 17.5 0Z"
                     />
                   </svg>
                 </div>
@@ -163,7 +193,7 @@ const Homepage = () => {
               </button>
               <button
                 classname="button-light-3"
-                class="w-24 h-24 outline outline-offset-2 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg drop-shadow-2xl"
+                class="w-24 h-24 outline outline-offset-2 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
                 onClick={handleClick}
               >
                 <div
@@ -172,17 +202,14 @@ const Homepage = () => {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="54"
-                    height="54"
+                    width="35"
+                    height="49"
                     fill="none"
-                    viewBox="0 0 54 54"
+                    viewBox="0 0 35 49"
                   >
                     <path
-                      stroke="#2057FF"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M27 40.5V28.687m0 0a13.52 13.52 0 0 0 3.375-.425M27 28.687a13.52 13.52 0 0 1-3.375-.425m8.438 16.826a27.15 27.15 0 0 1-10.126 0m8.438 5.361a32.416 32.416 0 0 1-6.75 0m8.438-9.949v-.432c0-2.212 1.48-4.102 3.392-5.211a16.874 16.874 0 1 0-16.913 0c1.913 1.11 3.395 3 3.395 5.211v.432"
+                      fill="#2057FF"
+                      d="m22.947 47.272-11.375-2.625a.875.875 0 0 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706Zm0-3.5-11.375-2.625a.875.875 0 1 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706Zm0-3.5-11.375-2.625a.875.875 0 1 0-.394 1.706l11.375 2.625a.875.875 0 0 0 .394-1.706ZM17.5 0C7.85 0 0 7.85 0 17.5c0 6.492 3.68 12.531 9.42 15.526l.173 2.439a.868.868 0 0 0 .936.81.875.875 0 0 0 .81-.935l-.21-2.934a.874.874 0 0 0-.49-.725C5.238 29.064 1.75 23.497 1.75 17.5c0-8.684 7.065-15.75 15.75-15.75 8.684 0 15.75 7.066 15.75 15.75a15.71 15.71 0 0 1-9.745 14.566.875.875 0 0 0-.538.746l-.381 5.327a.875.875 0 0 0 1.746.124l.342-4.796A17.451 17.451 0 0 0 35 17.5C35 7.85 27.15 0 17.5 0Z"
                     />
                   </svg>
                 </div>

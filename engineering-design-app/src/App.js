@@ -8,6 +8,7 @@ import Settings from "./pages/Settings";
 import Lamp from './pages/Lamp';
 import LampSettings from './pages/LampSettings';
 import Homepage from './pages/Homepage';
+import Statistics from './pages/Statistics';
 
 
 export default function App() {
@@ -15,11 +16,12 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Lamp />} />
+          <Route index element={<Homepage />} />
           <Route path="settings" element={<Settings />} />
           <Route path="aboutus" element={<Aboutus />} />
           <Route path="lampsettings" element={<LampSettings />} />
-          <Route path="Homepage" element={<Homepage />} />
+          <Route path="lamp" element={<Lamp />} />
+          <Route path="statistics" element={<Statistics />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

@@ -1,3 +1,19 @@
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.502);
+}
+a:focus,
+a:visited,
+a:active {
+  outline: none;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .App {
   text-align: center;
 }
