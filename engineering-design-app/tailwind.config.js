@@ -1,24 +1,23 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/flowbite/**/*.js"
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./node_modules/flowbite/**/*.js"],
   theme: {
     fontFamily: {
-      sans: ['Inter', ...defaultTheme.fontFamily.sans],
-  },
-    extend: {},
+      sans: ["Inter", ...defaultTheme.fontFamily.sans],
+    },
+    extend: {
+      colors: {
+        "widget-blue": "#2057ff",
+      },
+    },
     screens: {
-      'xs': '375px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
+      xs: "375px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+    },
+    plugins: [require("flowbite/plugin")],
   },
-  plugins: [
-    require('flowbite/plugin')
-  ],
-  }
-}
+};

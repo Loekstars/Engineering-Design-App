@@ -7,6 +7,7 @@ import NoPage from "./pages/NoPage";
 import Settings from "./pages/Settings";
 import Lamp from './pages/Lamp';
 import LampSettings from './pages/LampSettings';
+import Homepage from './pages/Homepage';
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="aboutus" element={<Aboutus />} />
           <Route path="lampsettings" element={<LampSettings />} />
+          <Route path="Homepage" element={<Homepage />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
