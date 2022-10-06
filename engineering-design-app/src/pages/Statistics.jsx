@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
+import Chart from '../components/Chart';
 
 const Statistics = () => {
+
   return (
     <div className='App'>
         <div class="container mx-auto align-center">
@@ -11,9 +13,9 @@ const Statistics = () => {
                             Statistics
                         </div>
                     </div>
-                    <div>
-                        
-                    </div>
+                </div>
+                <div class="w-full">
+                    <Chart/>
                 </div>
             </div>
         </div>
