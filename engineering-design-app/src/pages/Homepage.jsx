@@ -1,19 +1,33 @@
 import React from "react";
+import { useState } from "react";
+import useLongPress from "../components/useLongPress";
 
 //TODO : Set state of on-offtoggle-state-ON/OFF
 
-const lightStates = new Array(3).fill(false);
+// const lightStates = new Array(3).fill(false);
 
 const Homepage = () => {
-  const [toggle, setToggle] = React.useState(false);
+  const [toggle, setToggle] = useState(false);
 
+  const onLongPress = () => {
+    window.location.href="/Lamp";
+    console.log('longpress is triggered');
+  };
+
+  const defaultOptions = {
+    shouldPreventDefault: true,
+    delay: 500,
+  };
   //TODO : Fix status
   const handleClick = () => {
     setToggle(!toggle);
-
-    if (lightStates.every((element) => element === true)) {
-    }
+    // if (lightStates.every((element) => element === true)) {
+    // }
   };
+  
+  const longPressEvent = useLongPress(onLongPress, handleClick, defaultOptions);
+
+  const randomValue = Math.floor(Math.random() * 100);
 
   const editMode = () => {};
 
@@ -30,7 +44,6 @@ const Homepage = () => {
                 <div class="w-44">Statistics Summary</div>
                 <button
                   class="text-widget-blue text-xs place-text-center w-10 align-end font-thin focus:none"
-                  
                 >
                   <a href="/Statistics">Details</a>
                 </button>
@@ -43,7 +56,7 @@ const Homepage = () => {
                   class="flex flex-auto justify-center items-center h-10"
                 >
                   <div class="text-center font-medium text-widget-blue text-xl pt-2">
-                    132w
+                    {randomValue} w
                   </div>
                 </div>
                 <div class="text-xs text-center pt-3">
@@ -146,6 +159,7 @@ const Homepage = () => {
                 classname="button-light-1"
                 class="w-24 h-24 outline outline-offset-0 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
                 onClick={handleClick}
+                {...longPressEvent}
               >
                 <div
                   classname="Light-widget-1"
