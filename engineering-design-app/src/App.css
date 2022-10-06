@@ -3,7 +3,7 @@ textarea,
 button,
 select,
 a {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.502);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 a:focus,
 a:visited,

@@ -39,8 +39,6 @@ class Chart extends React.Component {
     this.setState({ zoomDomain: domain });
   }
 
-
-  
   render() {
     return (
       <div>
@@ -80,7 +78,7 @@ class Chart extends React.Component {
         <VictoryChart
           padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
           width={400}
-          height={90}
+          height={100}
           scale={{ x: "time" }}
           containerComponent={
             <VictoryBrushContainer
