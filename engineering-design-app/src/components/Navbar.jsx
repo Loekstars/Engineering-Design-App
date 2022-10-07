@@ -5,17 +5,16 @@ const Navbar = () => {
     <>
       <nav
         id="navbar"
-        class="sticky top-0 z-50 bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded-b-lg dark:bg-gray-900"
+        class="sticky top-0 z-50 bg-navbar-light px-2 sm:px-4 py-2.5 rounded-b-lg dark:bg-navbar-dark"
       >
         <div class="container flex flex-wrap justify-center md:justify-between items-center mx-auto">
           <a href="/" class="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="23" fill="none" viewBox="0 0 17 23">
-  <path fill="#535353" d="m10.77 22.189-5.338-1.232a.41.41 0 0 0-.185.8l5.34 1.232a.41.41 0 0 0 .185-.8Zm0-1.643-5.338-1.232a.412.412 0 0 0-.185.8l5.34 1.233a.41.41 0 0 0 .185-.8Zm0-1.643-5.338-1.232a.412.412 0 0 0-.185.8l5.34 1.233a.41.41 0 0 0 .185-.8Z"/>
-  <circle cx="8.214" cy="8.214" r="7.745" fill="#EEFF29"/>
-  <path fill="#535353" d="M8.214 0C3.685 0 0 3.685 0 8.214a8.27 8.27 0 0 0 4.421 7.288l.082 1.145a.41.41 0 0 0 .82-.059l-.099-1.377a.41.41 0 0 0-.23-.34A7.44 7.44 0 0 1 .82 8.214C.821 4.138 4.138.821 8.214.821c4.077 0 7.393 3.317 7.393 7.393a7.374 7.374 0 0 1-4.574 6.837.41.41 0 0 0-.253.35l-.178 2.5a.41.41 0 0 0 .819.06l.16-2.252a8.192 8.192 0 0 0 4.848-7.495C16.429 3.684 12.744 0 8.214 0Z"/>
-</svg>
-
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white pl-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="23" fill="none" viewBox="0 0 17 23">
+              <path fill="#535353" d="m10.77 22.189-5.338-1.232a.41.41 0 0 0-.185.8l5.34 1.232a.41.41 0 0 0 .185-.8Zm0-1.643-5.338-1.232a.412.412 0 0 0-.185.8l5.34 1.233a.41.41 0 0 0 .185-.8Zm0-1.643-5.338-1.232a.412.412 0 0 0-.185.8l5.34 1.233a.41.41 0 0 0 .185-.8Z"/>
+              <circle cx="8.214" cy="8.214" r="7.745" fill="#EEFF29"/>
+              <path fill="#535353" d="M8.214 0C3.685 0 0 3.685 0 8.214a8.27 8.27 0 0 0 4.421 7.288l.082 1.145a.41.41 0 0 0 .82-.059l-.099-1.377a.41.41 0 0 0-.23-.34A7.44 7.44 0 0 1 .82 8.214C.821 4.138 4.138.821 8.214.821c4.077 0 7.393 3.317 7.393 7.393a7.374 7.374 0 0 1-4.574 6.837.41.41 0 0 0-.253.35l-.178 2.5a.41.41 0 0 0 .819.06l.16-2.252a8.192 8.192 0 0 0 4.848-7.495C16.429 3.684 12.744 0 8.214 0Z"/>
+            </svg>
+            <span class="self-center text-xl font-semibold whitespace-nowrap text-white pl-2">
               Engineering Design
             </span>
           </a>

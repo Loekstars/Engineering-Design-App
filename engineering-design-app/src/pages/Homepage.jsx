@@ -7,7 +7,8 @@ import useLongPress from "../components/useLongPress";
 // const lightStates = new Array(3).fill(false);
 
 const Homepage = () => {
-  const [toggle, setToggle] = useState(false);
+  const [toggle_status, setToggle] = useState(false);
+  const [toggle_dropdown, setDropdown] = useState(false);
 
   const onLongPress = () => {
     window.location.href="/Lamp";
@@ -20,20 +21,31 @@ const Homepage = () => {
   };
   //TODO : Fix status
   const handleClick = () => {
-    setToggle(!toggle);
+    setToggle(!toggle_status);
     // if (lightStates.every((element) => element === true)) {
     // }
+  };
+
+  const addLight = () => {
+  };
+
+  const removeLight = () => {
+  };
+
+  const changeRoom = () => {
   };
   
   const longPressEvent = useLongPress(onLongPress, handleClick, defaultOptions);
 
   const randomValue = Math.floor(Math.random() * 100);
 
-  const editMode = () => {};
+  const showDropdown = () => {
+    setDropdown(!toggle_dropdown);
+  };
 
   return (
     <div classname="App">
-      <div class="container mx-auto align-center">
+      <div class="container mx-auto align-center w-screen">
         <div class="flex flex-col rounded-md pt-4">
           <div
             id="information-widget"
@@ -43,7 +55,7 @@ const Homepage = () => {
               <div class="flex justify-between">
                 <div class="w-44">Statistics Summary</div>
                 <button
-                  class="text-widget-blue text-xs place-text-center w-10 align-end font-thin focus:none"
+                  class="text-widget-blue text-xs place-text-center w-10 align-end focus:none"
                 >
                   <a href="/Statistics">Details</a>
                 </button>
@@ -76,7 +88,7 @@ const Homepage = () => {
                     fill="none"
                     viewBox="0 0 48 27"
                     classname="on-offtoggle-state-ON"
-                    style={{ display: toggle ? "none" : "block" }}
+                    style={{ display: toggle_status ? "none" : "block" }}
                   >
                     <path
                       fill="#2057FF"
@@ -90,7 +102,7 @@ const Homepage = () => {
                     fill="none"
                     viewBox="0 0 63 27"
                     classname="on-offtoggle-state-OFF"
-                    style={{ display: toggle ? "block" : "none" }}
+                    style={{ display: toggle_status ? "block" : "none" }}
                   >
                     <path
                       fill="#2057FF"
@@ -131,7 +143,7 @@ const Homepage = () => {
             <div class="font-light w-full text-xl text-left pl-4 p-2 rounded-t-2xl bg-slate-300/50">
               <div class="flex justify-between">
                 <div class="w-24">Lights</div>
-                <button class="w-6 align-end font-thin" onClick={editMode}>
+                <button class="w-6 align-end font-thin" onClick={showDropdown}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -152,6 +164,13 @@ const Homepage = () => {
                     />
                   </svg>
                 </button>
+                <div classname="dropdown-content" class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" style={{ display: toggle_dropdown ? "block" : "none" }}>
+                  <div class="py-1" role="none">
+                    <a href="/AddLight" onClick={addLight} class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Add Light</a>
+                    <a href="/" onClick={removeLight} class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Remove Light</a>
+                    <a href="/" onClick={changeRoom} class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Change room</a>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="grid grid-cols-3 items-center gap-4 h-28 pt-6">
