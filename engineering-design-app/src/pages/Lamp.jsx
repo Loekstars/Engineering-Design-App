@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CircleSlider from "react-circle-slider";
 
 const Lamp = () => {
@@ -9,6 +9,7 @@ const Lamp = () => {
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
   };
+  const slider = useRef(null);
   return (
     <div className='App'>
         <div class="container mx-auto align-center">
@@ -22,14 +23,18 @@ const Lamp = () => {
                 </div>
                 <div class='flex flex-col w-full items-center'>
                 {/* //TODO : Add a slider to change the brightness of the lamp */}
-                  {/* <CircleSlider
+                <CircleSlider
+                    ref={slider}
                     value={sliderValue}
-                    size={150}
-                    onchange={handleSliderChange}
-                    showTooltip={true}
-                    gradientColorFrom="#FEA346"
-                    gradientColorTo="#F8616D"
-                  /> */}
+                    stepSize={5}
+                    onChange={value => setSliderValue(value)}
+                    size={250}
+                    max={120}
+                    gradientColorFrom="#ec008c"
+                    gradientColorTo="#fc6767"
+                    knobRadius={20}
+                    circleWidth={20}
+                  />
                 </div>
             </div>
         </div>
