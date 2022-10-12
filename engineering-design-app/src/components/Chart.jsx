@@ -41,14 +41,14 @@ class Chart extends React.Component {
 
   render() {
     return (
-      <div>
+      <div class="flex flex-col md:max-h-32 md:max-w-lg items-center">
         <VictoryChart
           width={400}
           height={350}
           scale={{ x: "time" }}
           containerComponent={
             <VictoryZoomContainer
-              responsive={false}
+              responsive={true}
               zoomDimension="x"
               zoomDomain={this.state.zoomDomain}
               allowZoom={false}
@@ -58,7 +58,7 @@ class Chart extends React.Component {
         >
           <VictoryLine
             style={{
-              data: { stroke: "#2057ff" }
+              data: { stroke: "#2057ff" },
             }}
             data={[
                 { x: new Date(2022, 1, 11), y: randvalue0 },
@@ -82,7 +82,7 @@ class Chart extends React.Component {
           scale={{ x: "time" }}
           containerComponent={
             <VictoryBrushContainer
-              responsive={false}
+              responsive={true}
               brushDimension="x"
               brushDomain={this.state.selectedDomain}
               onBrushDomainChange={this.handleBrush.bind(this)}
