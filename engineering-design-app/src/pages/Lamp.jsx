@@ -30,12 +30,12 @@ const Lamp = () => {
             <div class='flex flex-col items-center pt-8'>
                 <div id='Information' class='flex flex-col w-3/4 md:w-2/5 items-center'>
                     <div class="pt-8 font-light w-full text-xl text-left pl-1 pr-1">
-                        <div class="w-48">
+                        <div class="w-48 mb-6 max-w-3/5">
                             Bedroom Light
                         </div>
                     </div>
                 </div>
-                <div class='flex flex-col w-full items-center pt-24'>
+                <div class='flex flex-col w-full items-center pt-16 bg-slate-200/50 rounded-lg'>
                 {/* //TODO : Add a slider to change the brightness of the lamp */}
                     <CircularSlider
                         label="Brightness"
@@ -50,18 +50,19 @@ const Lamp = () => {
                         progressColorFrom="#4ade80"
                         progressColorTo="#3b82f6"
                         progressSize={24}
-                        trackColor="#eeeeee"
+                        trackColor="#FFFFFF"
                         trackSize={24}
                     >
                     </CircularSlider>
-                </div>
-                <div id="Settings-Color" class="w-3/4 sm:w-64 pt-8">
+                <div id="Settings-Color" class="w-3/4 sm:w-64 pt-8 m-6">
                   <a href="/LampSettings">
                     <button class="rounded-full bg-blue-600/90 p-2 bottom-2 z-50">
                       Change settings
                     </button>
                   </a>
                 </div>
+                </div>
+
             </div>
         </div>
     </div>
