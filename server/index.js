@@ -10,14 +10,20 @@ const db = mysql.createConnection({
   database: "engineering design db",
 });
 
-app.get("/", (req, res) => {
-  const sql =
-    "INSERT INTO sensor_data (sensor_id, sensor_measurement, light_intensity_lamp) VALUES (1, 20, 80)";
-  db.query(sql, (err, result) => {;
-    console.log(err);
-    res.send("Hello World!");
-    console.log("refreshed");
-  });
+app.get("/", async (req, res, next) => {
+  try {
+    //res.set("Access-Control-Allow-Origin", "*");
+    const sql = "INSERT INTO sensor_data (sensor_id, sensor_measurement, light_intensity_lamp) VALUES (1, 20, 80)";
+    db.query(sql, (err, result) => {;
+      console.log(err);
+      res.send("Hello World!");
+      console.log("refreshed");
+    });
+  }
+  catch(e) {
+    next(e);
+  }
+  
 });
 
 app.listen(port, () => {
