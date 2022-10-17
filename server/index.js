@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "adminpassword",
+  password: "adminpassword", // can be taken out depending on whether the host uses password
   database: "engineering design db",
 });
 
@@ -31,8 +31,9 @@ app.get('/api/get/', (req, res, next) => {
 app.get("/", async (req, res, next) => {
   try {
     //res.set("Access-Control-Allow-Origin", "*");
-    const sql = "INSERT INTO sensor_data (sensor_id, sensor_measurement, light_intensity_lamp) VALUES (1, 20, 80)";
-    db.query(sql, (err, result) => {;
+    const sql1 = "INSERT INTO sensor_data (sensor_id, sensor_measurement, light_intensity_lamp) VALUES (1, 20, 80)"; // for csv db
+    const sql2 = "INSERT INTO Raw_Data (sensor_id,data) VALUES ("+Math.floor(Math.random()*20)+","+Math.floor(Math.random()*101)+")"; // for xml db
+    db.query(sql2, (err, result) => {;
       console.log(err);
       res.send("Hello World!");
       console.log("refreshed");
