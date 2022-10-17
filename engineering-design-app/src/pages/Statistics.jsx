@@ -1,7 +1,16 @@
 import React from 'react';
 import Chart from '../components/Chart';
+import { useEffect } from 'react';
+import Axios from 'axios';
 
 const Statistics = () => {
+
+    useEffect(() => {
+        Axios.get('http://localhost:3001/api/get').then((response) => {
+            console.log(response.data);
+            console.log("Data Fetched")
+        });
+      }, []);
 
   return (
     <div className='App'>

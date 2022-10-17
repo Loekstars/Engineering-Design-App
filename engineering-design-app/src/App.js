@@ -9,6 +9,7 @@ import LampSettings from './pages/LampSettings';
 import Homepage from './pages/Homepage';
 import Statistics from './pages/Statistics';
 import AddLight from './pages/AddLight';
+import Debug from './pages/Debug';
 
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="lamp" element={<Lamp />} />
           <Route path="statistics" element={<Statistics />} />
           <Route path="addlight" element={<AddLight />} />
+          <Route path="debug" element={<Debug />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
