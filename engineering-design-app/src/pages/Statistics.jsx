@@ -4,11 +4,14 @@ import { useEffect } from 'react';
 import Axios from 'axios';
 
 const Statistics = () => {
+    
+    const [data, setData] = React.useState([]);
 
     useEffect(() => {
         Axios.get('http://localhost:3001/api/get').then((response) => {
-            console.log(response.data);
+            setData(response.data);
             console.log("Data Fetched")
+            console.log(response.data)
         });
       }, []);
 
@@ -24,12 +27,11 @@ const Statistics = () => {
                     </div>
                 </div>
                 <div class='flex flex-col w-full items-center'>
-                    <Chart/>
+                    <Chart data={data}/>
                 </div>
             </div>
         </div>
     </div>
   )
 }
-
 export default Statistics
