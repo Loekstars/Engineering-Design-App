@@ -36,7 +36,6 @@ class Chart extends React.Component {
     }
     console.log("2", this.state.data)
   }
-  
   // Triggered by onZoomDomainChange and
   // alters VictoryBrushContainer brushDomain prop
   handleZoom(domain) {

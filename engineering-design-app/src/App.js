@@ -13,6 +13,12 @@ import Debug from './pages/Debug';
 
 
 export default function App() {
+  //get window url
+  //assign url to variable
+  //check whether the url is eaqual to the url of the tab you are on
+  //if it is, then set the tab to active
+  //if not, then set the tab to inactive
+  
   return (
     <Router>
       <Routes>
