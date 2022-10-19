@@ -26,8 +26,8 @@ class Chart extends React.Component {
     const chartData = this.props.data.map((chartData) => {
       return {
         x: new Date(chartData.timestamp),
-        y: chartData.sensor_measurement,
-        label: chartData.sensor_measurement,
+        y: chartData.data,
+        label: chartData.data,
       };
     });
 
@@ -70,7 +70,7 @@ class Chart extends React.Component {
             style={{
               data: { stroke: "#2057ff" },
             }}
-            interpolation="catmullRom"
+            // interpolation="catmullRom"
             domain={{y: [-1, 101]}}
             data={this.state.data}
           />
@@ -100,7 +100,7 @@ class Chart extends React.Component {
             }}
             labelComponent={<VictoryTooltip type={false} />}
             data={this.state.data}
-            interpolation="catmullRom"
+            // interpolation="catmullRom"
           />
         </VictoryChart>
       </div>
