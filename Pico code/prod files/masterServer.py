@@ -59,12 +59,12 @@ def serve(_connection):
         client,addr = _connection.accept()
         print('Client connected from: ',addr)
         request = client.recv(1024)
-        request = str(request)
+        #request = str(request)
         
         #send the response stuff here
         
         #html = web_page(lux)
-        client.send("hello world")
+        client.send(b"1")#message revieved
         print(request)
         client.close()
         

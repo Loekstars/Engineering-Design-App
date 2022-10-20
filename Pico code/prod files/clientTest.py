@@ -12,16 +12,29 @@ password = 'Wow this hotspot is so secure :)' #wifi password
 serverIP = '192.168.137.30'
 serverURL = "http://" + serverIP
 led = Pin(13, Pin.OUT)
+#lock = _thread.allocate_lock()
 
 #the light sensor
 i2c = machine.I2C(0, scl = Pin(17), sda = Pin(16))
 sensor = BH1750(i2c)
 
+#this is the list storing the last 5 light values
+light_vals = []
+
 #the second thread
 def second_thread(measureInterval):
-    while True:
-       print(sensor.luminance(BH1750.ONCE_HIRES_1))
-       sleep(measureInterval)
+    try:#try catch because threads interact a bit weirdly with interrupts and this probably helps with closing the entire program
+        while True:
+            #lock.acquire()#aquire a lock so we don't get threading problems
+            val = sensor.luminance(BH1750.ONCE_HIRES_1)
+            light_vals.append(val)#add the light to the list
+            if len(light_vals) > 10:
+                light_vals.pop(0)
+            print(light_vals)
+            #lock.release()#release the lock again
+            sleep(measureInterval)
+    except KeyboardInterrupt:
+        machine.reset()
 
 #connect to a wlan and return the ip adress
 def connect(_ssid, _password):
@@ -29,7 +42,6 @@ def connect(_ssid, _password):
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     wlan.connect(_ssid, _password)
-    print('1')
     #wait for connection
     max_wait = 10
     while max_wait > 0:
@@ -56,7 +68,15 @@ def sendData():
         s = socket.socket()
         s.connect(addr)
         #make the message
-        s.send(b"GET Data")
+        #lock.acquire()#aquire the lock so we can read/write the sensor data thread safe
+        sum = 0#summing for calculating the average
+        i = 0#counter
+        for lv in light_vals:
+            sum += lv
+            i += 1
+        #lock.release()#we don't need to interact with the array anymore
+        avg_lv = round(sum/i)#calculate the rounded average of the latest few values
+        s.send(str(avg_lv))#send this as a message to the master
         
         #store the response
         resp = str(s.recv(512))
@@ -67,6 +87,9 @@ def sendData():
 #main code
 try:
     ip = connect(ssid, password)
+    
+    _thread.start_new_thread(second_thread, (2,))#start the sensor thread
+    
     #connection succes blink
     for i in range(0, 10):
         led.value(1)
