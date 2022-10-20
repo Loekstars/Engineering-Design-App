@@ -5,7 +5,7 @@
 - https://www.phpmyadmin.net
 -
 - Host: 127.0.0.1
-- Generation Time: Oct 17, 2022 at 08:42 PM
+- Generation Time: Oct 19, 2022 at 07:30 PM
 - Server version: 10.4.25-MariaDB
 - PHP Version: 8.1.10
 -->
@@ -19,9 +19,35 @@
             <pma:table name="lights">
                 CREATE TABLE `lights` (
                   `light_id` int(11) NOT NULL AUTO_INCREMENT,
+                  `state` tinyint(1) NOT NULL DEFAULT 0,
                   `luminance` int(11) NOT NULL,
-                  PRIMARY KEY (`light_id`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+                  PRIMARY KEY (`light_id`),
+                  CONSTRAINT `LUM_PERCENTAGE` CHECK (`luminance` &lt;= 100 and `luminance` &gt;= 0)
+                ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:trigger name="Lights_Delete">
+                CREATE TRIGGER `Lights_Delete` AFTER DELETE ON `lights`
+                 FOR EACH ROW INSERT INTO lights_records SELECT CURRENT_TIMESTAMP,OLD.light_id,&quot;delete&quot;,OLD.state,OLD.luminance
+            </pma:trigger>
+            <pma:trigger name="Lights_Insert">
+                CREATE TRIGGER `Lights_Insert` AFTER INSERT ON `lights`
+                 FOR EACH ROW INSERT INTO lights_records SELECT CURRENT_TIMESTAMP,NEW.light_id,&quot;insert&quot;,NEW.state,NEW.luminance
+            </pma:trigger>
+            <pma:trigger name="Lights_Update">
+                CREATE TRIGGER `Lights_Update` AFTER UPDATE ON `lights`
+                 FOR EACH ROW INSERT INTO lights_records SELECT CURRENT_TIMESTAMP,NEW.light_id,&quot;update&quot;,NEW.state,NEW.luminance
+            </pma:trigger>
+            <pma:table name="lights_records">
+                CREATE TABLE `lights_records` (
+                  `timestamp` datetime NOT NULL,
+                  `light_id` int(11) NOT NULL,
+                  `action` varchar(6) NOT NULL,
+                  `state` tinyint(1) NOT NULL,
+                  `luminance` int(11) NOT NULL,
+                  PRIMARY KEY (`light_id`,`timestamp`),
+                  CONSTRAINT `ACTION_TYPES` CHECK (`action` in (&#039;update&#039;,&#039;insert&#039;,&#039;delete&#039;)),
+                  CONSTRAINT `LUM_PERCENTAGE` CHECK (`luminance` &lt;= 100 and `luminance` &gt;= 0)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             </pma:table>
             <pma:table name="raw_data">
                 CREATE TABLE `raw_data` (
@@ -54,82 +80,4 @@
             </pma:table>
         </pma:database>
     </pma:structure_schemas>
-
-    <!--
-    - Database: 'app database'
-    -->
-    <database name="app database">
-        <!-- Table lights -->
-        <table name="lights">
-            <column name="light_id">1</column>
-            <column name="luminance">70</column>
-        </table>
-        <!-- Table raw_data -->
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 19:54:59</column>
-            <column name="sensor_id">1</column>
-            <column name="data">80</column>
-        </table>
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 20:29:28</column>
-            <column name="sensor_id">2</column>
-            <column name="data">3</column>
-        </table>
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 20:31:33</column>
-            <column name="sensor_id">2</column>
-            <column name="data">7</column>
-        </table>
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 20:37:33</column>
-            <column name="sensor_id">2</column>
-            <column name="data">13</column>
-        </table>
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 20:38:00</column>
-            <column name="sensor_id">2</column>
-            <column name="data">16</column>
-        </table>
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 20:00:27</column>
-            <column name="sensor_id">4</column>
-            <column name="data">81</column>
-        </table>
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 20:00:12</column>
-            <column name="sensor_id">5</column>
-            <column name="data">98</column>
-        </table>
-        <table name="raw_data">
-            <column name="timestamp">2022-10-17 20:00:21</column>
-            <column name="sensor_id">5</column>
-            <column name="data">18</column>
-        </table>
-        <!-- Table refined_data -->
-        <table name="refined_data">
-            <column name="timestamp">2022-10-17 19:31:50</column>
-            <column name="sensor_id">1</column>
-            <column name="data">1232</column>
-        </table>
-        <table name="refined_data">
-            <column name="timestamp">2022-10-17 20:29:28</column>
-            <column name="sensor_id">2</column>
-            <column name="data">3</column>
-        </table>
-        <table name="refined_data">
-            <column name="timestamp">2022-10-17 20:31:33</column>
-            <column name="sensor_id">2</column>
-            <column name="data">5</column>
-        </table>
-        <table name="refined_data">
-            <column name="timestamp">2022-10-17 20:37:33</column>
-            <column name="sensor_id">2</column>
-            <column name="data">8</column>
-        </table>
-        <table name="refined_data">
-            <column name="timestamp">2022-10-17 20:38:00</column>
-            <column name="sensor_id">2</column>
-            <column name="data">10</column>
-        </table>
-    </database>
 </pma_xml_export>
