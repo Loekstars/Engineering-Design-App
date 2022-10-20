@@ -28,39 +28,44 @@ const wattage; // the lamp's wattage
 }
 
 function getEnergyTotals() {
-	const q_lights = "SELECT DISTINCT light_id FROM lights_records";
-	// TODO: retrieve lights into r_lights
-	const r_lights;
-	var normalEnergy;
-	var currentEnergy;
-	var savedEnergy;
-	var timeOn = 0;
-	var timeTotal;
-	for (let i = 0; i < r_lights.length; i++) {
-		var q_data = "SELECT * FROM lights_records WHERE light_id="+r_lights[i]+" ORDER BY lights_records.timestamp ASC";
-		// TODO: retrieve data into r_data
-		var r_data;
-		for (let j = 0; j < r_data.length; j++) {
-			if (r_data[j]["state"] == "on") {
-				var t1 = Date.parse(r_data[j]["timestamp"]);
-				var t2;
-				if (j == r_data.length-1) {
-					t2 = Date.now();
+	try {
+		const q_lights = "SELECT DISTINCT light_id FROM lights_records";
+		// TODO: retrieve lights into r_lights
+		const r_lights;
+		var normalEnergy;
+		var currentEnergy;
+		var savedEnergy;
+		var timeOn = 0;
+		var timeTotal;
+		for (let i = 0; i < r_lights.length; i++) {
+			var q_data = "SELECT * FROM lights_records WHERE light_id="+r_lights[i]+" ORDER BY lights_records.timestamp ASC";
+			// TODO: retrieve data into r_data
+			var r_data;
+			for (let j = 0; j < r_data.length; j++) {
+				if (r_data[j]["state"] == "on") {
+					var t1 = Date.parse(r_data[j]["timestamp"]);
+					var t2;
+					if (j == r_data.length-1) {
+						t2 = Date.now();
+					}
+					else {
+						t2 = Date.parse(r_data[j+1]["timestamp"]);
+					}
+					var lum = r_data[j]["luminance"];
+					var dc = Math.pow(luminance,lum/100-1);
+					timeOn += dc*(t2-t1);
+					timeTotal += t2-t1;
 				}
-				else {
-					t2 = Date.parse(r_data[j+1]["timestamp"]);
-				}
-				var lum = r_data[j]["luminance"];
-				var dc = Math.pow(luminance,lum/100-1);
-				timeOn += dc*(t2-t1);
-				timeTotal += t2-t1;
 			}
 		}
+		normalEnergy = timeTotal*wattage;
+		currentEnergy = timeOn*wattage;
+		savedEnergy = normalEnergy-currentEnergy;
+		return {normal:normalEnergy,current:currentEnergy,saved:savedEnergy};
+	} 
+	catch (e) {
+		console.error(e);
 	}
-	normalEnergy = timeTotal*wattage;
-	currentEnergy = timeOn*wattage;
-	savedEnergy = normalEnergy-currentEnergy;
-	return {normal:normalEnergy,current:currentEnergy,saved:savedEnergy};
 }
 
 function getEnergyDaily() {
@@ -72,6 +77,7 @@ function getEnergyDaily() {
 	var savedEnergy;
 	var timeOn = 0;
 	var timeTotal;
+	var energyArray;
 	for (let i = 0; i < r_lights.length; i++) {
 		var data_array = new Array();
 		var q_data = "SELECT * FROM lights_records WHERE light_id="+r_lights[i]+" ORDER BY lights_records.timestamp ASC";
@@ -97,5 +103,5 @@ function getEnergyDaily() {
 	normalEnergy = timeTotal*wattage;
 	currentEnergy = timeOn*wattage;
 	savedEnergy = normalEnergy-currentEnergy;
-	return {normal:normalEnergy,current:currentEnergy,saved:savedEnergy};
+	return energyArray;
 }
