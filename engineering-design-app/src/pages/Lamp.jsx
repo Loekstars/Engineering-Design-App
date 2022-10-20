@@ -1,6 +1,8 @@
 import React from "react";
 import CircularSlider from '@fseehawer/react-circular-slider';
 
+//This is a page where the user can change the brightness of the lamp
+
 const Lamp = () => {
 
   const [lampBrightness, setLampBrightness] = React.useState(0);
