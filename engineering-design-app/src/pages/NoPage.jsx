@@ -1,6 +1,8 @@
 import React from 'react'
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 
+//This is a page to display whenever there is no page to render
+
 const NoPage = () => {
   return (
     <div class="text-center pt-16 h-screen">

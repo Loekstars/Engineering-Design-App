@@ -1,5 +1,7 @@
 import React from 'react'
 
+//On this page the user can find information about the team
+
 const Aboutus = () => {
   return (
     

@@ -4,11 +4,14 @@ import { useEffect } from 'react';
 import Axios from 'axios';
 import HashLoader from "react-spinners/HashLoader";
 
+//On this page we show the data that has been collected by the lampsensor.
+
 const Statistics = () => {
     
     const [data, setData] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
-
+    
+    //Create loading animation and wait for loading animation to end to show chart
     useEffect(() => {
         Axios.get('http://localhost:3001/api/get').then((response) => {
             setData(response.data);

@@ -11,7 +11,6 @@ import {
 // BrushContainer is the bottom graph
 
 
-//const randvalue0 = Math.floor(Math.random() * 90) + 10;
 class Chart extends React.Component {
   //chart data is passed in as a prop
   //show data whenever the component is loaded

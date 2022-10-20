@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 
+//This component gives the app the longpress functionality
+
 const useLongPress = (
   onLongPress,
   onClick,
