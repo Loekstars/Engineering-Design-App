@@ -37,7 +37,35 @@ app.get('/api/insert', function(req, res) {
     res.send("Data received");
     const sql1 = 'INSERT INTO raw_data (sensor_id, data) VALUES ('+ sensor_id +','+ sensor_data+')';
     db.query(sql1, (err, result) => {
-      console.log(sensor_id, sensor_data, "Data inserted");
+      console.log(sensor_id, sensor_data, "Data inserted from api/insert");
+    });
+  }
+  catch (e) {
+    next(e);
+  }
+});
+
+app.get('/api/insertBrightness', function(req, res) {
+  const sensor_id = req.query.sensorid;
+  const brightness = req.query.brightness;
+  console.log(sensor_id, brightness);
+  try {
+    res.send("Data received");
+    const sql1 = 'INSERT INTO lights luminance VALUES (brightness)';
+    db.query(sql1, (err, result) => {
+      console.log(sensor_id, brightness, "Data inserted into Brightness");
+    });
+  }
+  catch (e) {
+    next(e);
+  }
+});
+
+app.get("/api/brightness", async (req, res, next) => {
+  try {
+    const sqlSelect = "SELECT luminance FROM lights ORDER BY `light_id` DESC LIMIT 1";
+    db.query(sqlSelect, (err, result) => {
+      res.send(result);
     });
   }
   catch (e) {
@@ -47,21 +75,10 @@ app.get('/api/insert', function(req, res) {
 
 app.get("/", async (req, res, next) => {
   try {
-    // //res.set("Access-Control-Allow-Origin", "*");
-    // const sql1 = "INSERT INTO sensor_data (sensor_id, sensor_measurement, light_intensity_lamp) VALUES (1, 33, 12)"; // for csv db
-    // const sql2 = "INSERT INTO Raw_Data (sensor_id,data) VALUES ("+Math.floor(Math.random()*20)+","+Math.floor(Math.random()*101)+")"; // for xml db
-    // db.query(sql2, (err, result) => {;
-    //   console.log(err);
-      
-    //   console.log("refreshed");
-    // });
     res.send("Database is running succesfully!");
-    const sql1 = 'INSERT INTO raw_data (sensor_id, data) VALUES (1, 34)';
-    db.query(sql1, (err, result) => {
-      console.log("Data inserted");
-    });
   }
   catch(e) {
+    res.send("Database is not running");
     next(e);
   }
   

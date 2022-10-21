@@ -52,7 +52,7 @@ const LineChart = () => {
 
         //get y values from the data to map them in the graph
         const yValues = chartData.map((chartData) => {
-          return chartData.y;
+          return chartData.y/65535*10000;
         });
 
         //get labels from the database to map them in the graph
@@ -100,7 +100,7 @@ const LineChart = () => {
                         </div>
                     </div>
                 </div>
-                <div class='flex flex-col h-full w-full items-center mt-12'>
+                <div class='flex flex-col h-full w-full items-center mt-12 pl-2 pr-2'>
                 {loading ? <HashLoader
                   color="#2057ff"
                   size={75}	

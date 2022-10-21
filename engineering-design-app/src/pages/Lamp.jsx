@@ -9,6 +9,8 @@ const Lamp = () => {
 
   function handleChange(value) {
     setLampBrightness(value);
+    const url = 'http://localhost:3001/api/insertBrightness?sensorid=1&data=' + value;
+    fetch(url);
     console.log(value);
   }
 
