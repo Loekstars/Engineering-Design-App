@@ -3,6 +3,8 @@ import { Line } from "react-chartjs-2";
 import { useEffect } from 'react';
 import Axios from 'axios';
 import HashLoader from "react-spinners/HashLoader";
+import { Chart, registerables} from 'chart.js';
+Chart.register(...registerables);
 
 // const data1 = {
 //   labels: labels,
@@ -24,7 +26,6 @@ const options = {
       max: 100,
     },
   },
-  maintainAspectRatio: false,
 };
 
 
@@ -60,7 +61,7 @@ const LineChart = () => {
             'default', {weekday: 'long'}
           );
         });
-        
+        console.log(labelValues);
         //set the data to the corresponding states
         setData(yValues);
         setLabelValues(labelValues);

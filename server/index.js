@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "adminpassword", // can be taken out depending on whether the host uses password
+  password: "", // can be taken out depending on whether the host uses password
   database: "app database", 
 });
 
@@ -30,7 +30,6 @@ app.get('/api/get/', (req, res, next) => {
 });
 
 // data can be sent to the database using the following url
-// http://localhost:3001/api/insert/?timestamp=2021-01-01&sensor_measurement=50
 app.get('/api/insert', function(req, res) {
   const sensor_id = req.query.sensorid;
   const sensor_data = req.query.data;
@@ -57,6 +56,10 @@ app.get("/", async (req, res, next) => {
     //   console.log("refreshed");
     // });
     res.send("Database is running succesfully!");
+    const sql1 = 'INSERT INTO raw_data (sensor_id, data) VALUES (1, 34)';
+    db.query(sql1, (err, result) => {
+      console.log("Data inserted");
+    });
   }
   catch(e) {
     next(e);

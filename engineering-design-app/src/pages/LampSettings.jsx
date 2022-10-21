@@ -11,13 +11,13 @@ function updateValue(){
 }
 
 const LampSettings = () => {
-  const [value, setValue] = React.useState(50);
+  // const [value, setValue] = React.useState(50);
   const [loading, setLoading] = React.useState(true);
 
       //Create loading animation and wait for loading animation to end to show chart
       useEffect(() => {
         Axios.get('http://localhost:3001/api/get').then((response) => {
-          setValue(response.data);
+          // setValue(response.data);
             console.log("Data Fetched")
             setTimeout(() => {
                 setLoading(false);
