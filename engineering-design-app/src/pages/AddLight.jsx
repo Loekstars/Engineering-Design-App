@@ -1,6 +1,22 @@
 import React from 'react'
 
 const AddLight = () => {
+
+  function showBanner() {
+    //get banner by htmlid
+    var banner = document.getElementById("banner");
+    //set banner to visible
+    if (banner.style.display === "hidden") {
+      banner.style.display = "block";
+    } else {  
+      banner.style.display = "hidden";
+    }
+  }
+
+  // function toggleBanner() {
+  //   showBanner(!banner);
+  // }
+
   return (
     <div className='App'>
         <div classname="back-button">
@@ -20,11 +36,20 @@ const AddLight = () => {
         <div class="container mx-auto align-center">
             <div class='flex flex-col items-center pt-8 h-screen'>
                 <div id='Information' class='flex flex-col w-3/4 md:w-2/5 items-center'>
-                    <div class="pt-3 font-light w-full text-xl text-left pl-1 pr-1">
+                    <div class="pt-3 pb-24 font-light w-full text-xl text-left pl-1 pr-1">
                         <div class="w-24">
                             Add a light
                         </div>
                     </div>
+                </div>
+                <button class="rounded-2xl w-48 h-14 bg-widget-blue/80 p-2 bottom-2 z-50 font-semibold">
+                  Search for lights
+                </button>
+                {/* //TODO : Make the banner appear when the user clicks on the button */}
+                <div class="items-center justify-center w-full h-full pt-24">
+                  <div classname="banner" class="hidden p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
+                    <span class="font-medium">Warning!</span> No lights found in the area!
+                  </div>
                 </div>
             </div>
         </div>
