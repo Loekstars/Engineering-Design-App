@@ -6,18 +6,24 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 
 //This is a page where the user can change settings for the lamp (TBC)
 
-function updateValue(){
-  //TODO: Send data to the pico
-}
+
 
 const LampSettings = () => {
   // const [value, setValue] = React.useState(50);
   const [loading, setLoading] = React.useState(true);
+  const [value, setValue] = React.useState(50);
+
+  function updateValue(){
+    //TODO: Send data to the pico
+    console.log(value);
+    setValue(value);
+  }
 
       //Create loading animation and wait for loading animation to end to show chart
       useEffect(() => {
-        Axios.get('http://localhost:3001/api/get').then((response) => {
+        Axios.get('http://192.168.0.140:3001/api/get').then((response) => {
           // setValue(response.data);
+            setValue(response.data);
             console.log("Data Fetched")
             setTimeout(() => {
                 setLoading(false);
@@ -25,6 +31,7 @@ const LampSettings = () => {
 
             console.log(response.data)
         }).catch((err) => {
+            setValue(50);
             console.log(err);
         });
       }, []);
@@ -62,8 +69,10 @@ const LampSettings = () => {
                       />:
                           <Slider
                                 label="Brightness"
-                                valueLabelDisplay="down"
-                                onChange={updateValue()}
+                                valueLabelDisplay="auto"
+                                onChange={(event, newValue) => {
+                                  updateValue(event.target.value);
+                                }}
                                 color="primary"
                               />}
                     </div>

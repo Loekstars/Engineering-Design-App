@@ -49,7 +49,7 @@ const Homepage = () => {
 
       //Create loading animation and wait for loading animation to end to show chart
       useEffect(() => {
-        Axios.get('http://localhost:3001/api/powerSaving').then((response) => {
+        Axios.get('http://192.168.0.140:3001/api/powerSaving').then((response) => {
             setPowerSaved(response.data);
             console.log("Data Fetched")
             setTimeout(() => {
