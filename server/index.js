@@ -73,6 +73,40 @@ app.get("/api/brightness", async (req, res, next) => {
   }
 });
 
+//#region List of lights and light records selection
+app.get("/api/lights", async (req, res, next) => {
+  try {
+    const sqlSelect = "SELECT DISTINCT light_id FROM lights_records";
+    db.query(sqlSelect, (err, result) => {
+      res.send(result);
+    });
+  }
+  catch (e) {
+    next(e);
+  }
+});
+
+app.get("/api/lightrecords", async (req, res, next) => {
+  try {
+    const lightid = req.query.lightid;
+    var where;
+    if (lightid == undefined || lightid == "") {
+      where = " ";
+    }
+    else {
+      where = " WHERE light_id="+lightid+" ";
+    }
+    const sqlSelect = "SELECT * FROM lights_records"+where+"ORDER BY lights_records.timestamp ASC";
+    db.query(sqlSelect, (err, result) => {
+      res.send(result);
+    });
+  }
+  catch (e) {
+    next(e);
+  }
+});
+//#endregion
+
 app.get("/", async (req, res, next) => {
   try {
     res.send("Database is running succesfully!");
