@@ -103,7 +103,8 @@ const LineChart = () => {
                 <div class='flex flex-col h-full w-full items-center mt-12 pl-2 pr-2'>
                 {loading ? <HashLoader
                   color="#2057ff"
-                  size={75}	
+                  size={50}
+                  class="pt-24"
                   />: <Line data={dataChart} height={300} options={options}/>}
                 </div>
             </div>

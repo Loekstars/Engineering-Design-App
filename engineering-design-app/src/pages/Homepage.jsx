@@ -1,6 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import useLongPress from "../components/useLongPress";
+import { useEffect } from "react";
+import Axios from "axios";
+import ClimbingBoxLoader  from "react-spinners/ClimbingBoxLoader";
 
 //TODO : Set state of on-offtoggle-state-ON/OFF
 
@@ -37,11 +40,33 @@ const Homepage = () => {
   
   const longPressEvent = useLongPress(onLongPress, handleClick, defaultOptions);
 
-  const randomValue = Math.floor(Math.random() * 100);
-
   const showDropdown = () => {
     setDropdown(!toggle_dropdown);
   };
+  
+  const [powerSaved, setPowerSaved] = useState("");
+  const [loading, setLoading] = React.useState(true);
+
+      //Create loading animation and wait for loading animation to end to show chart
+      useEffect(() => {
+        Axios.get('http://localhost:3001/api/powerSaving').then((response) => {
+            setPowerSaved(response.data);
+            console.log("Data Fetched")
+            setTimeout(() => {
+                setLoading(false);
+            }, 20);
+
+            console.log(response.data)
+        }).catch((err) => {
+              setTimeout(() => {
+                setLoading(false);
+            }, 20);
+            const randomValue = Math.floor(Math.random() * 100);
+            setPowerSaved(randomValue + "w");
+            console.log(err);
+        });
+      }, []);
+
 
   return (
     <div classname="App">
@@ -68,7 +93,10 @@ const Homepage = () => {
                   class="flex flex-auto justify-center items-center h-10"
                 >
                   <div class="text-center font-medium text-widget-blue text-xl pt-2">
-                    {randomValue} w
+                    {loading ? <ClimbingBoxLoader 
+                    color="#2057ff"
+                    size={7}
+                    />: powerSaved}
                   </div>
                 </div>
                 <div class="text-xs text-center pt-3">
