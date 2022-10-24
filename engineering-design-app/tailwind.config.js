@@ -10,7 +10,7 @@ module.exports = {
     extend: {
       colors: {
         "widget-blue": "#2057ff",
-        "navbar-light": "#1B3A96",
+        "navbar-light": "#2660A4",
         "navbar-dark": "#111827",
       },
     },
