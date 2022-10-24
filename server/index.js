@@ -73,6 +73,19 @@ app.get("/api/brightness", async (req, res, next) => {
   }
 });
 
+app.get("/api/powerSaved", async (req, res, next) => {
+  try {
+    //TODO: change the query to get the power saved from the database @peter
+    const sqlSelect = "SELECT luminance FROM lights ORDER BY `light_id` DESC LIMIT 1";
+    db.query(sqlSelect, (err, result) => {
+      res.send(result);
+    });
+  }
+  catch (e) {
+    next(e);
+  }
+});
+
 //#region List of lights and light records selection
 app.get("/api/lights", async (req, res, next) => {
   try {
