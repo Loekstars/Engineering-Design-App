@@ -73,7 +73,11 @@ app.get("/api/brightness", async (req, res, next) => {
   }
 });
 
-app.get("/api/powerSaved", async (req, res, next) => {
+
+// -------------------------
+// Dit hoeft niet aangezien de database t niet berekent maar de app zelf, functie zit in lights.js maar weet niet goed hoe ik dit moet toepassen in de app 
+// -------------------------
+/*app.get("/api/powerSaved", async (req, res, next) => {
   try {
     //TODO: change the query to get the power saved from the database @peter
     const sqlSelect = "SELECT luminance FROM lights ORDER BY `light_id` DESC LIMIT 1";
@@ -84,7 +88,7 @@ app.get("/api/powerSaved", async (req, res, next) => {
   catch (e) {
     next(e);
   }
-});
+});*/
 
 //#region List of lights and light records selection
 app.get("/api/lights", async (req, res, next) => {
