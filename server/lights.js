@@ -1,18 +1,21 @@
-import Axios from 'axios'
+import Axios from 'axios';
 
 const luminance;	// the lamp's usual luminance when a duty cycle of 100% is used
 const wattage = 24;	// the lamp's wattage (J/s)
 var illuminance_max;	// TODO: set maximum illuminance that can be given
 var illumance_rel = getSomeIlluminance(); // TODO: retrieve relative percentage from slider
+const stateOn = 1;
+const stateOff = 0;
 
 /**
  * Function for setting the luminance of a specific lamp.
  * @param {int} index Index of the lamp to send package to.
  * @param {float} brightness Relative brightness the lamp should have from a scale of 0-100 (in percentages). This is based on perception of the light level by human eye and is thus logarithmic compared to the actual energy intensity.
  */
+/*
  function setDutyCycle(index, brightness) {
 	try {
-		if (brightness < 0 || brightness > 100) throw new Error("Value out of bounds for [0,100].")
+		if (brightness < 0 || brightness > 100) throw new Error("Value out of bounds for [0,100].");
 		var duty_cycle = Math.pow(luminance,brightness-1);
 		
 		// TODO: code for setting up package to send to lamp with index value 'index'
@@ -30,6 +33,7 @@ var illumance_rel = getSomeIlluminance(); // TODO: retrieve relative percentage 
 		return false;
 	}
 }
+*/
 
 /**
  * Function for getting total amount of saved energy over all time and lamps
@@ -46,16 +50,16 @@ function getEnergyTotals() {
 		for (let i = 0; i < r_lights.length; i++) {
 			var r_data = Axios.get('http://localhost:3001/api/lightrecord?lightid='+r_lights[i]);
 			for (let j = 0; j < r_data.length; j++) {
-				if (r_data[j]["state"] == "on") {
-					var t1 = Date.parse(r_data[j]["timestamp"]); // milliseconds
+				if (r_data[j].state == stateOn) {
+					var t1 = Date.parse(r_data[j].timestamp); // milliseconds
 					var t2;
 					if (j == r_data.length-1) {
 						t2 = Date.now(); // milliseconds
 					}
 					else {
-						t2 = Date.parse(r_data[j+1]["timestamp"]); // milliseconds
+						t2 = Date.parse(r_data[j+1].timestamp); // milliseconds
 					}
-					var lum = r_data[j]["luminance"];
+					var lum = r_data[j].luminance;
 					var dc = Math.pow(luminance,lum/100-1); // scale 0-1
 					timeOn += dc*(t2-t1)/1000; // seconds 
 					timeTotal += (t2-t1)/1000; // seconds
@@ -101,22 +105,20 @@ function getEnergyDaily() {
 	 * @returns date parsed into string
 	 */
 	function parseDate(d) {
-		return [d.getFullYear(),(d.getMonth()+1).toString().padStart(2,'0'),d.getDate().toString().padStart(2,'0')].join('-')
+		return [d.getFullYear(),(d.getMonth()+1).toString().padStart(2,'0'),d.getDate().toString().padStart(2,'0')].join('-');
 	}
 	try {
 		const r_lights = Axios.get('http://localhost:3001/api/lights');
 		// For every lamp in the list
 		for (let i = 0; i < r_lights.length; i++) {
-			var q_data = "SELECT * FROM lights_records WHERE light_id="+r_lights[i]+" ORDER BY lights_records.timestamp ASC";
-			// TODO: retrieve data into r_data
 			var r_data = Axios.get('http://localhost:3001/api/lightrecord?lightid='+r_lights[i]);
 			// For every record in the table
 			for (let j = 0; j < r_data.length; j++) {
 				// If at index j the lamp is on and the lamp is not deleted
-				if (r_data[j]["state"] == "on" && r_data[j]["action"] != "delete") {
-					var lum = r_data[j]["luminance"];	// Get the relative luminance value
+				if (r_data[j].state == stateOn && r_data[j].action != "delete") {
+					var lum = r_data[j].luminance;	// Get the relative luminance value
 					var dc = Math.pow(luminance,lum/100-1);	// Convert into direct current
-					var d1 = new Date(r_data[j]["timestamp"]);	// Get first date
+					var d1 = new Date(r_data[j].timestamp);	// Get first date
 					var d2;	// Variable for second date
 					var t1,t2;	// Variables for dates in milliseconds
 					// if there is no next record, use current datetime
@@ -125,7 +127,7 @@ function getEnergyDaily() {
 					}
 					// if there is next record, use its timestamp
 					else {
-						d2 = new Date(r_data[j+1]["timestamp"]);
+						d2 = new Date(r_data[j+1].timestamp);
 					}
 					// If the date of d2 takes place before that of d1 
 					if (+d2 < +d1) {
@@ -150,19 +152,19 @@ function getEnergyDaily() {
 						timeTotal = +d_date/1000;
 						timeOn = timeTotal*dc;
 						d = parseDate(d1);
-						updateEnergy(d,[timeTotal*wattage,timeOn*wattage,wattage*(timeTotal-timeOn)])
+						updateEnergy(d,[timeTotal*wattage,timeOn*wattage,wattage*(timeTotal-timeOn)]);
 						d3 = new Date(+d1+d_date);
 						while (!(d2.getDate == d3.getDate && d2.getMonth == d3.getMonth && d2.getFullYear == d3.getFullYear)) {
 							timeTotal = day/1000;
 							timeOn = timeTotal*dc;
 							d = parseDate(d3);
-							updateEnergy(d,[timeTotal*wattage,timeOn*wattage,wattage*(timeTotal-timeOn)])
+							updateEnergy(d,[timeTotal*wattage,timeOn*wattage,wattage*(timeTotal-timeOn)]);
 							d3 = new Date(+d3+day);
 						}
 						timeTotal = (d2 % day)/1000;
 						timeOn = timeTotal*dc;
 						d = parseDate(d2);
-						updateEnergy(d,[timeTotal*wattage,timeOn*wattage,wattage*(timeTotal-timeOn)])
+						updateEnergy(d,[timeTotal*wattage,timeOn*wattage,wattage*(timeTotal-timeOn)]);
 					}
 				}
 			}
@@ -175,5 +177,5 @@ function getEnergyDaily() {
 }
 
 function calculateLuminance() {
-
+	
 }
