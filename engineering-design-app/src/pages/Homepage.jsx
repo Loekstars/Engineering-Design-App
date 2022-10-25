@@ -4,6 +4,8 @@ import useLongPress from "../components/useLongPress";
 import { useEffect } from "react";
 import Axios from "axios";
 import ClimbingBoxLoader  from "react-spinners/ClimbingBoxLoader";
+// const lights = require("../dataCalculations/lights.js");
+import * as lights from "../dataCalculations/lights.js";
 
 //TODO : Set state of on-offtoggle-state-ON/OFF
 
@@ -54,14 +56,16 @@ const Homepage = () => {
             console.log("Data Fetched")
             setTimeout(() => {
                 setLoading(false);
-            }, 20);
+            }, 1);
 
             console.log(response.data)
         }).catch((err) => {
               setTimeout(() => {
                 setLoading(false);
-            }, 20);
-            const randomValue = Math.floor(Math.random() * 100);
+            }, 1);
+            //const energyArray = lights.getEnergyDaily();
+            //console.log(energyArray);
+            const randomValue = lights.getEnergyTotal().saved;//energyArray[energyArray.length-1].saved /*Math.floor(Math.random() * 100)*/;
             setPowerSaved(randomValue + "w");
             console.log(err);
         });
