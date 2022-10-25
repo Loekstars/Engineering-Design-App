@@ -1,19 +1,53 @@
 import React from "react";
 import CircularSlider from '@fseehawer/react-circular-slider';
+import Axios from "axios";
+import { useEffect } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 //This is a page where the user can change the brightness of the lamp
 
 const Lamp = () => {
 
   const [lampBrightness, setLampBrightness] = React.useState(0);
+  const [loading, setLoading] = React.useState(true);
+
+      //Create loading animation and wait for loading animation to end to show chart
+      useEffect(() => {
+        Axios.get('http://localhost:3001/api/brightness').then((response) => {
+          // setValue(response.data);
+            setLampBrightness(response.data);
+            console.log("Data Fetched")
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
+
+            console.log(response.data)
+        }).catch((err) => {
+            setLampBrightness(50);
+            console.log(err);
+        });
+      }, []);
 
   function handleChange(value) {
     setLampBrightness(value);
-    const url = 'http://192.168.0.140:3001/api/insertBrightness?sensorid=1&data=' + value;
-    fetch(url);
-    console.log(value);
+    const val = value;
+    //set state according to value
+    var state = 0;
+    if (val > 0) {
+      state = 1;
+    } else { 
+      state = 0;
+    }
+    console.log("val: ", val);
+    const url = 'http://localhost:3001/api/insertBrightness?sensorid=1&brightness=' + val + '&state=' + state;
+    try{
+      fetch(url);
+    } catch (e){
+      console.log(e);
+    }
   }
 
+  
   return (
     <div className='App'>
       <div classname="back-button">
@@ -38,6 +72,7 @@ const Lamp = () => {
                 </div>
                 <div class='flex flex-col w-full items-center pt-16 bg-slate-200/50 rounded-lg'>
                 {/* //TODO : Add a slider to change the brightness of the lamp */}
+                {loading ? <ClipLoader />:
                     <CircularSlider
                         label="Brightness"
                         min={0}
@@ -53,8 +88,9 @@ const Lamp = () => {
                         progressSize={24}
                         trackColor="#FFFFFF"
                         trackSize={24}
-                    >
-                    </CircularSlider>
+                        progressLineCap={"round"}
+                    />}
+                    
                 <div id="Settings-Color" class="w-3/4 sm:w-64 pt-8 m-6">
                   <a href="/LampSettings">
                     <button class="rounded-2xl bg-widget-blue/80 p-2 bottom-2 z-50 font-medium">

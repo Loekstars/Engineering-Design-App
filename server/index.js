@@ -48,12 +48,13 @@ app.get('/api/insert', function(req, res) {
 app.get('/api/insertBrightness', function(req, res) {
   const sensor_id = req.query.sensorid;
   const brightness = req.query.brightness;
-  console.log(sensor_id, brightness);
+  const state = req.query.state;
+  console.log(sensor_id, brightness, state);
   try {
     res.send("Data received");
-    const sql1 = 'INSERT INTO lights luminance VALUES (brightness)';
+    const sql1 = 'UPDATE lights SET light_id='+ sensor_id +', state=' + state + ', luminance='+ brightness +';';
     db.query(sql1, (err, result) => {
-      console.log(sensor_id, brightness, "Data inserted into Brightness");
+      console.log(sensor_id, brightness, state, "Data inserted into Brightness");
     });
   }
   catch (e) {
@@ -63,9 +64,14 @@ app.get('/api/insertBrightness', function(req, res) {
 
 app.get("/api/brightness", async (req, res, next) => {
   try {
-    const sqlSelect = "SELECT luminance FROM lights ORDER BY `light_id` DESC LIMIT 1";
+    const sqlSelect = "SELECT * FROM lights";
     db.query(sqlSelect, (err, result) => {
-      res.send(result);
+      const brightness = result[0].luminance;
+      const state = result[0].state;
+      var data = [brightness, state];
+      console.log(data);
+      res.send(data);
+      console.log("Data fetched from api/brightness");
     });
   }
   catch (e) {
