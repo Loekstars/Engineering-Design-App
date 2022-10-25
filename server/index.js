@@ -97,7 +97,7 @@ app.get("/api/brightness", async (req, res, next) => {
 });*/
 
 //#region List of lights and light records selection
-app.get("/api/lights", async (req, res, next) => {
+app.get("/api/lights", (req, res, next) => {
   try {
     const sqlSelect = "SELECT DISTINCT light_id FROM lights_records";
     db.query(sqlSelect, (err, result) => {
@@ -109,7 +109,7 @@ app.get("/api/lights", async (req, res, next) => {
   }
 });
 
-app.get("/api/lightrecords", async (req, res, next) => {
+app.get("/api/lightrecords", (req, res, next) => {
   try {
     const lightid = req.query.lightid;
     var where;
