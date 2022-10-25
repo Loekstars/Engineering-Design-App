@@ -16,7 +16,9 @@ const Aboutus = () => {
                 <div class="w-24">Our Goal</div>
             </div>
             <span class="p-3">
-              Hier komt een inspirerende text over onze goal van het product
+            With this product, we strive to inspire people to lessen energy consumption in 
+            their households. This new technology uses real life data to adapt the brightness 
+            of the lamp to just the right amount.
             </span>
         </div>
       </div>

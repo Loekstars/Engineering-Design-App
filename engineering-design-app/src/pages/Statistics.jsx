@@ -40,7 +40,7 @@ const LineChart = () => {
   //grab data from the database if succesfol set the data and labels
   // if not succesfol set the data to a default value
   useEffect(() => {
-      Axios.get('http://192.168.0.140:3001/api/get').then((response) => {
+      Axios.get('http://localhost:3001/api/get').then((response) => {
         setData(response.data);
         // console.log("Data Fetched", response.data)
         // console.log(data.data)
@@ -55,7 +55,7 @@ const LineChart = () => {
 
         //get y values from the data to map them in the graph
         const yValues = chartData.map((chartData) => {
-          return chartData.y/65535*10000;
+          return chartData.y/30000*100;
         });
 
         //get labels from the database to map them in the graph

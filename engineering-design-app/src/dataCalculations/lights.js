@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const luminance;	// the lamp's usual luminance when a duty cycle of 100% is used
+const luminance = 2000;	// the lamp's usual luminance when a duty cycle of 100% is used
 const wattage = 24;	// the lamp's wattage (J/s)
 var illuminance_max;	// TODO: set maximum illuminance that can be given
 var illumance_rel = getSomeIlluminance(); // TODO: retrieve relative percentage from slider
