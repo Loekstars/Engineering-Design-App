@@ -27,7 +27,7 @@ const BottomNav = () => {
 
   return (
     <React.Fragment>
-      <section class="flex justify-center fixed bottom-0 inset-x-0 z-50 shadow-lg text-gray-800 bg-gray-900 dark:bg-dark backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30  border-t-2 border-royal/20">
+      <section class="flex justify-center fixed bottom-0 inset-x-0 z-50 shadow-lg dark:text-gray-800 dark:bg-gray-200 backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30 border-t-2 border-royal/20">
       <div class="md:hidden sticky z-50 bottom-2">
         <div id="tabs" class="flex justify-between w-full">
         <div class="pt-2 w-24 flex justify-center">
@@ -66,9 +66,9 @@ const BottomNav = () => {
             className={({ isActive }) => (isActive ? setActive("statistics") : "")}
             class="focus:text-royal hover:text-royal justify-center text-center"
           >
-          <div class="w-10 h-10 inline-block mb-2 pt-2 pl-2">
+          <div class="flex justify-center mb-2 pt-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32" style={{ display: statistics ? "none" : "inline-block" }}>
-              <path stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 17.5A1.5 1.5 0 0 1 5.5 16h3a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 8.5 28h-3A1.5 1.5 0 0 1 4 26.5v-9Zm9-6a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5v15a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5v-15Zm9-6A1.5 1.5 0 0 1 23.5 4h3A1.5 1.5 0 0 1 28 5.5v21a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5v-21Z"/>
+              <path stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17.5A1.5 1.5 0 0 1 5.5 16h3a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 8.5 28h-3A1.5 1.5 0 0 1 4 26.5v-9Zm9-6a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5v15a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5v-15Zm9-6A1.5 1.5 0 0 1 23.5 4h3A1.5 1.5 0 0 1 28 5.5v21a1.5 1.5 0 0 1-1.5 1.5h-3a1.5 1.5 0 0 1-1.5-1.5v-21Z"/>
             </svg>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32" style={{ display: statistics ? "inline-block" : "none" }}>
               <path fill="#1F2937" d="M24.5 3A2.5 2.5 0 0 0 22 5.5v21a2.5 2.5 0 0 0 2.5 2.5h1a2.5 2.5 0 0 0 2.5-2.5v-21A2.5 2.5 0 0 0 25.5 3h-1ZM13 11.5A2.5 2.5 0 0 1 15.5 9h1a2.5 2.5 0 0 1 2.5 2.5v15a2.5 2.5 0 0 1-2.5 2.5h-1a2.5 2.5 0 0 1-2.5-2.5v-15Zm-9 6A2.5 2.5 0 0 1 6.5 15h1a2.5 2.5 0 0 1 2.5 2.5v9A2.5 2.5 0 0 1 7.5 29h-1A2.5 2.5 0 0 1 4 26.5v-9Z"/>
@@ -84,12 +84,13 @@ const BottomNav = () => {
             className={({ isActive }) => (isActive ? setActive("aboutus") : "")}
             class="focus:text-royal hover:text-royal justify-center text-center"
           >
-          <div class="w-10 h-10 inline-block mb-2 pt-2 pl-2">
+          <div class="flex justify-center mb-2 pt-2">
             <svg
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
+              width="32" height="32"
               // class="w-10 h-10 inline-block mb-1 pt-2 pl-2"
               style={{ display: aboutus ? "none" : "inline-block" }}
             >
@@ -102,6 +103,7 @@ const BottomNav = () => {
             <svg 
               viewBox="0 0 24 24" 
               fill="currentColor" 
+              width="32" height="32"
               // class="w-10 h-10 inline-block mb-1 pt-2 pl-2"
               style={{ display: aboutus ? "inline-block" : "none" }}
             >
