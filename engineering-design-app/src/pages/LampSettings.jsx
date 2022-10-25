@@ -13,12 +13,6 @@ const LampSettings = () => {
   const [loading, setLoading] = React.useState(true);
   const [value, setValue] = React.useState(50);
 
-  function updateValue(){
-    //TODO: Send data to the pico
-    console.log(value);
-    setValue(value);
-  }
-
       //Create loading animation and wait for loading animation to end to show chart
       useEffect(() => {
         Axios.get('http://192.168.0.140:3001/api/get').then((response) => {
@@ -27,10 +21,11 @@ const LampSettings = () => {
             console.log("Data Fetched")
             setTimeout(() => {
                 setLoading(false);
-            }, 1000);
+            }, 10);
 
             console.log(response.data)
         }).catch((err) => {
+            setLoading(false);
             setValue(50);
             console.log(err);
         });
@@ -71,7 +66,8 @@ const LampSettings = () => {
                                 label="Brightness"
                                 valueLabelDisplay="auto"
                                 onChange={(event, newValue) => {
-                                  updateValue(event.target.value);
+                                  console.log(newValue);
+                                  setValue(newValue);
                                 }}
                                 color="primary"
                               />}

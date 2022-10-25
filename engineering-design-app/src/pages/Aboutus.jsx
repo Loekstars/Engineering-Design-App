@@ -81,7 +81,10 @@ const Aboutus = () => {
                     classname="Light-widget-1"
                     class="flex flex-auto justify-center items-center h-14"
                   >
-                      <img class="w-8 h-8" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAADTUlEQVRoge2ZS2sUQRDHfxuz8eAm4OOmriCCCqLZm1cvYhQTAyZ+iYAH9eIDQcGoR+M38EESMYIHg15UclQRRHRNzCEqagw+4opCSDIeusftmXTP9HR2MivkDwU901Xd/+rtrq6ahWUsI1PkgS7gJlAGfkkpAzdkXz4zdjHoBMYAL0bGgEMZcdSiAbhEPPGw9ErbzBEm/xk4CewCVklpBU7JvrATmaKTIKF+oBCh3wwMhGw6UuZoRBPBPd8P5CzscsCgYjdKRge7i+C2iVr5MJqBScX+cK1IJTlUnUr7CiJc2qIC9CnPmUSlN1RXcKeDfatiX64hL2tUFAJJto+PgmJfqRWppYzL6lzzaQwah49Ke7PDXKrNJwd7LZI48FRpH3SYS7V54mC/aITDaHMC2xbgCymE0STIE7zIBrC/yG5RBxcZiPitpgWDRP8SLQTJzwPtKXOMRS9BJyaB00AJESoLsn2G4LbxgAsZ8F2ABhY6ESfzCPJ1kU776EDs5zjyo9TBtjEhj4go14HXiBu2ArwCrsm+JAc2B1xVnvuwCxR1g+OIX82HJ9/9FygiMtywA79xu/mXHHepnhsf/vNwJowSIFyq+lDfJaohisAQwRS61nJfzlUAJiwcmMAyjS8C31Ik7gF/gC1yvsuafp0DntSNxe2UyXvAWTnXDmAmgQMz0iYSPxWD3TYeOyIHjKB30Ieub4SYu0E3UBroNhBU6+WyQac7auA5RTHN3OWxgVxJ0SkZdB5GDTylKG6sNWsF0wZyaxSdtQad776CboVfKO00K6dZw/vzwAqgUbaT2ALQQ9XTKcQqpIFh9KvrAV+lmPrvRQ1cQHyB8JWfAatTcKAtgmCctMUN3o4oQnyDcWBvDcn7W3fIgfyQ7SRHNcYPEIVMowPpJmn7iGrOvx7zYdbJtLSxxhGCF5svP4A7wDFgP7AVET2agJXAOvnuAHBC6qp51RzVS7JHM75JesIEbaqdDcBF6YzLyuswi4gw5xDbqRSt/g/PWcRnyU2IZGoc98P3FvEXVdGVRBiu9eZ2YA8isdqGcK6F6jeiCmLrTSBq5ZeI29P0Wd02bVnAt14KZmcH6uU7zQcLnfeps1gE2hAETWfnHbAvM3bLiMBfcL7UCZutNMwAAAAASUVORK5CYII="></img>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path class="stroke-widget-blue" stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
+                  </svg>
+
                   </div>
                   <div class="text-xs text-center font-bold pt-1">Babette van Leeuwen</div>
                   <div class="text-xs text-center pt-1">Babette van Leeuwen</div>

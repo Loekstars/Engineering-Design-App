@@ -69,9 +69,8 @@ app.get("/api/brightness", async (req, res, next) => {
       const brightness = result[0].luminance;
       const state = result[0].state;
       var data = [brightness, state];
-      console.log(data);
       res.send(data);
-      console.log("Data fetched from api/brightness");
+      console.log(data, "Data fetched from api/brightness");
     });
   }
   catch (e) {

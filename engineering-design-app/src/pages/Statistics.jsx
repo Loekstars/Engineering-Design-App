@@ -36,12 +36,14 @@ const LineChart = () => {
   const [data, setData] = React.useState([]);
   const [labelValues, setLabelValues] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  // const [dataLoaded, setDataLoaded] = React.useState(false);
 
   //grab data from the database if succesfol set the data and labels
   // if not succesfol set the data to a default value
   useEffect(() => {
       Axios.get('http://localhost:3001/api/get').then((response) => {
         setData(response.data);
+        // setDataLoaded(true);
         // console.log("Data Fetched", response.data)
         // console.log(data.data)
 
@@ -52,10 +54,9 @@ const LineChart = () => {
             y: chartData.data,
           };
         });
-
         //get y values from the data to map them in the graph
         const yValues = chartData.map((chartData) => {
-          return chartData.y/30000*100;
+          return chartData.y/5000*100;
         });
 
         //get labels from the database to map them in the graph
@@ -73,12 +74,14 @@ const LineChart = () => {
         setTimeout(() => {
             setLoading(false);
         }, 1000);
+      
       }).catch((err) => {
           setData([404]);
           setLabelValues(['ERROR'])
           console.log(err);
+      
       });
-    }, );
+    }, []);
 
     const dataChart = {
       labels: labelValues,
@@ -91,7 +94,6 @@ const LineChart = () => {
         },
       ],
     };
-
   return (
     <div className='App'>
         <div class="container mx-auto align-center">

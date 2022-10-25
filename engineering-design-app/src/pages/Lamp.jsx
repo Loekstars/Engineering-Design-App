@@ -8,7 +8,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 const Lamp = () => {
 
-  const [lampBrightness, setLampBrightness] = React.useState(0);
+  const [lampBrightness, setLampBrightness] = React.useState(50);
   const [loading, setLoading] = React.useState(true);
 
       //Create loading animation and wait for loading animation to end to show chart
@@ -30,7 +30,7 @@ const Lamp = () => {
 
   function handleChange(value) {
     setLampBrightness(value);
-    const val = value;
+    const val = value *100;
     //set state according to value
     var state = 0;
     if (val > 0) {
@@ -42,6 +42,7 @@ const Lamp = () => {
     const url = 'http://localhost:3001/api/insertBrightness?sensorid=1&brightness=' + val + '&state=' + state;
     try{
       fetch(url);
+      console.log(url);
     } catch (e){
       console.log(e);
     }
@@ -70,7 +71,7 @@ const Lamp = () => {
                         </div>
                     </div>
                 </div>
-                <div class='flex flex-col w-full items-center pt-16 bg-slate-200/50 rounded-lg'>
+                <div class='flex flex-col w-full items-center pt-16 pb-16 bg-slate-200/50 rounded-lg'>
                 {/* //TODO : Add a slider to change the brightness of the lamp */}
                 {loading ? <ClipLoader />:
                     <CircularSlider
@@ -91,7 +92,7 @@ const Lamp = () => {
                         progressLineCap={"round"}
                     />}
                     
-                <div id="Settings-Color" class="w-3/4 sm:w-64 pt-8 m-6">
+                <div id="Settings-Color" class="hidden w-3/4 sm:w-64 pt-8 m-6">
                   <a href="/LampSettings">
                     <button class="rounded-2xl bg-widget-blue/80 p-2 bottom-2 z-50 font-medium">
                       Change settings
