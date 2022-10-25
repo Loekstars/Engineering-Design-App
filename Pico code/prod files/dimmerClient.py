@@ -16,28 +16,46 @@ lampState = True#toggle the lamp
 debounceTime = 0#for removing noise from the button presses
 lamp.freq(1000)
 DUTY = 65535#set the initial duty to full brightness
+currentButtonState = 0
 
 #interrupt handler function for the button press
-def callBack(pin):
-    if (time.tick_ms()-debounceTime) > 500:#filter out extremely fast accidental button presses
-        if lampState:
-            lampState = False
-        else:
-            lampState = True
-        debounceTime = time.tick_ms()
-
-button.irq(trigger=Pin.IRQ_RISING, handler=callBack)#do an interrupt when the light switch is pressed
+# def callBack(pin):
+#     if (time.tick_ms()-debounceTime) > 500:#filter out extremely fast accidental button presses
+#         if lampState:
+#             lampState = False
+#         else:
+#             lampState = True
+#         debounceTime = time.tick_ms()
+# 
+# button.irq(trigger=Pin.IRQ_RISING, handler=callBack)#do an interrupt when the light switch is pressed
 
 #the second thread
 def second_thread(lampUpdateInterval):
+    global currentButtonState, lampState, DUTY
     try:#try catch because threads interact a bit weirdly with interrupts and this probably helps with closing the entire program
-        while True:
-            #todo do the the brightness pwm stuff
+        while True:            
+            #check for button press
+            lastButtonState = currentButtonState
+            currentButtonState = button.value()
+            #print(str(lastButtonState) + str(currentButtonState))
+        
+            if lastButtonState and not currentButtonState:
+                if (time.tick_ms()-debounceTime) > 300:#filter out extremely fast accidental button presses
+                    print('button pressed')
+                    if lampState:
+                        lampState = False
+                    else:
+                        lampState = True
+                    debounceTime = time.tick_ms()
+                
+            #update the duty
             if lampState:
+                #xprint(DUTY)
                 lamp.duty_u16(DUTY)
             else:
-                lamp.duty_16(0)#turn off the lamp
-            sleep(lampUpdateInterval)
+                lamp.duty_u16(0)#turn off the lamp
+            #sleep(lampUpdateInterval)
+            sleep(0.01)
     except KeyboardInterrupt:
         machine.reset()
 
@@ -67,6 +85,7 @@ def connect(_ssid, _password):
 
 #send the data requests
 def sendData(updateInterval):
+    global lampState, DUTY#this is needed because python is stupid with assigning scope to variables
     while True:
         ai = socket.getaddrinfo(serverIP, 80)
         addr = ai[0][-1]
@@ -95,9 +114,9 @@ def sendData(updateInterval):
             DUTY = _duty
         else:
             print('MESG ERROR duty out of range')
-        if splitStr[1] == '1':
+        if splitStr[1] == 'True':
             lampState = True
-        elif splitStr[1] == '0':
+        elif splitStr[1] == 'False':
             lampState = False
         else:
             print('MESG ERROR not a valid lampstate')
@@ -109,7 +128,7 @@ def sendData(updateInterval):
 try:
     ip = connect(ssid, password)
     
-    _thread.start_new_thread(second_thread, (0.5,))#start the sensor thread
+    _thread.start_new_thread(second_thread, (1,))#start the sensor thread
     sendData(2)
 except KeyboardInterrupt:
     machine.reset()
