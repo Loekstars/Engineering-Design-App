@@ -39,7 +39,7 @@ const stateOff = 0;
  * Function for getting total amount of saved energy over all time and lamps
  * @returns Object containing energy used normally (without pwm), currently (with pwm) and the amount saved (difference in previous two)
  */
-function getEnergyTotals() {
+function getEnergyTotal() {
 	try {
 		const r_lights = Axios.get('http://localhost:3001/api/lights');
 		var normalEnergy;
@@ -91,7 +91,7 @@ function getEnergyDaily() {
 	function updateEnergy(date, values) {
 		var n = energyArray.map(object => object.date).indexOf(date);
 		if (n == -1) {
-			energyArray.push({date:date,normalEnergy:values[0],currentEnergy:values[1],savedEnergy:values[2]});
+			energyArray.push({date:date,normal:values[0],current:values[1],saved:values[2]});
 		}
 		else {
 			energyArray[n].normalEnergy += values[0];
@@ -177,5 +177,17 @@ function getEnergyDaily() {
 }
 
 function calculateLuminance() {
-	
+	var lum; // TODO: get luminance value of lamps from lights table
+	var sensor_data; // TODO: get latest sensor data from refined data
+	var min_data = Math.min(sensor_data.map(object => object.data));
+	var min_data_index = sensor_data.map(object => object.data).indexOf(min_data);
+	var lum_new = lum * illumance_rel/(min_data/illuminance_max);
+	// TODO: upload new luminance to lights table;
+}
+
+function calibrate() {
+	// TODO: set all lights to max output (i.e. luminance = 100%)
+	// TODO: wait for min time elapsed before data is aggregated correctly (since mean filter)
+	// TODO: get latest illuminance values from sensor_data
+	// TODO: update illum_max values in sensor table
 }
