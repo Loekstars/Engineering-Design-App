@@ -14,12 +14,8 @@ import * as lights from "../dataCalculations/lights.js";
 const Homepage = () => {
   const [toggle_status, setToggle] = useState(false);
   const [toggle_dropdown, setDropdown] = useState(false);
-  const luminance = 2000;	// the lamp's usual luminance when a duty cycle of 100% is used
   const wattage = 24;	// the lamp's wattage (J/s)
-  var illuminance_max;	// TODO: set maximum illuminance that can be given
-  var illuminance_rel = 100; // TODO: retrieve relative percentage from slider
   const stateOn = 1;
-  const stateOff = 0;
 
   const onLongPress = () => {
     window.location.href="/Lamp";
@@ -52,7 +48,7 @@ const Homepage = () => {
     setDropdown(!toggle_dropdown);
   };
   
-  const [powerSaved, setPowerSaved] = useState("");
+  const [powerSaved, setPowerSaved] = useState(0);
   const [loading, setLoading] = React.useState(true);
 
       //Create loading animation and wait for loading animation to end to show chart
@@ -71,63 +67,11 @@ const Homepage = () => {
             }, 1);
             //const energyArray = lights.getEnergyDaily();
             //console.log(energyArray);
-            const randomValue = lights.getEnergyTotal().saved;//energyArray[energyArray.length-1].saved /*Math.floor(Math.random() * 100)*/;
-            setPowerSaved(randomValue + "w");
+            const wattSaved = 16;
+            setPowerSaved(wattSaved + "w");
             console.log(err);
         });
       }, []);
-
-
-      function getEnergyTotal() {
-        try {
-          var normalEnergy = 0;
-          var currentEnergy = 0;
-          var savedEnergy = 0;
-          var timeOn = 0;
-          var timeTotal = 0;
-          Axios.get('http://localhost:3001/api/lights').then(r_lights => {
-            r_lights = r_lights.data.map(object => object.light_id);
-            var timeO = 0;
-            var timeT = 0;
-            const times = function(t){return t};
-            const temp = r_lights.length;
-            console.log("TEMP:", temp);
-            Axios.get('http://localhost:3001/api/lightrecords').then(result => {
-
-              for (let j = 0; j < result.length; j++) {
-                if (result[j].state === stateOn) {
-                  var t1 = Date.parse(result[j].timestamp); // milliseconds
-                  var t2;
-                  if (j === result.length-1) {
-                    t2 = Date.now(); // milliseconds
-                  }
-                  else {
-                    t2 = Date.parse(result[j+1].timestamp); // milliseconds
-                  }
-                  var dc = result[j].luminance/100000;
-                  timeOn += dc*(t2-t1)/1000; // seconds 
-                  timeTotal += (t2-t1)/1000; // seconds
-                }
-              }
-              return [timeOn,timeTotal];
-            }).then(times);
-            timeO = times[0];
-            timeT = times[1];
-            console.log(timeO,",",timeT);
-
-          });
-          normalEnergy = timeTotal*wattage;
-          currentEnergy = timeOn*wattage;
-          savedEnergy = normalEnergy-currentEnergy;
-          console.log(currentEnergy,",",normalEnergy,",",savedEnergy);
-          console.log(timeOn,",",timeTotal);
-          return {normal:normalEnergy,current:currentEnergy,saved:savedEnergy};
-        } 
-        catch (e) {
-          console.error(e);
-        }
-      }
-
   return (
     <div classname="App">
       <div class="container mx-auto align-center w-screen">
@@ -156,11 +100,11 @@ const Homepage = () => {
                     {loading ? <ClimbingBoxLoader 
                     color="#2057ff"
                     size={7}
-                    />: getEnergyTotal()}
+                    />: powerSaved}
                   </div>
                 </div>
                 <div class="text-xs text-center pt-3">
-                  Today's Power Savings
+                  This week's Power Savings
                 </div>
               </div>
               <div class="w-28 h-28 outline bg-white outline-1 outline-gray-200 p-2 rounded-lg drop-shadow-md">

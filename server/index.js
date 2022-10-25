@@ -102,6 +102,24 @@ app.get("/api/brightness", async (req, res, next) => {
   }
 });
 
+app.get("/api/getChartData", async (req, res, next) => {
+  try {
+    const sqlSelect = 'SELECT * FROM lights_records WHERE state=1 AND luminance > 200 LIMIT 200';
+    db.query(sqlSelect, (err, result) => {
+      //make and array with the luminance values
+      // var data = [];
+      // for (var i = 0; i < result.length; i++) {
+      //   data.push(result[i].luminance);
+      // }
+      res.send(result);
+      // console.log(result, "Data fetched from api/getChartData");
+    });
+  }
+  catch (e) {
+    next(e);
+  }
+});
+
 
 // -------------------------
 // Dit hoeft niet aangezien de database t niet berekent maar de app zelf, functie zit in lights.js maar weet niet goed hoe ik dit moet toepassen in de app 
@@ -134,14 +152,7 @@ app.get("/api/lights", (req, res, next) => {
 
 app.get("/api/lightrecords", (req, res, next) => {
   try {
-    var where;
-    if (lightid == undefined || lightid == "") {
-      where = " ";
-    }
-    else {
-      where = " WHERE light_id=1 ";
-    }
-    const sqlSelect = "SELECT * FROM lights_records"+where+"ORDER BY lights_records.timestamp ASC";
+    const sqlSelect = "SELECT * FROM lights_records WHERE light_id=1 ORDER BY lights_records.timestamp ASC";
     db.query(sqlSelect, (err, result) => {
       res.send(result);
     });

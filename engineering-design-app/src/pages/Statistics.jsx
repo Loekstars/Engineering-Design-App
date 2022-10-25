@@ -41,8 +41,26 @@ const LineChart = () => {
   //grab data from the database if succesfol set the data and labels
   // if not succesfol set the data to a default value
   useEffect(() => {
-      Axios.get('http://localhost:3001/api/get').then((response) => {
-        setData(response.data);
+      Axios.get('http://localhost:3001/api/getChartData').then((response) => {
+        // calculate the power saving percentage
+        var powerSavingPercentage = response.data.map((item) => {
+          return 100 - Math.round((item.luminance / 10000) * 100);
+        });
+
+        // take the average of every 10 datapoints and calculate the average
+        // then add that to a new array
+        var averagePowerSavingPercentage = [];
+        var sum = 0;
+        for (var i = 0; i < powerSavingPercentage.length; i++) {
+          sum += powerSavingPercentage[i];
+          if (i % 10 === 0) {
+            averagePowerSavingPercentage.push(Math.round(sum / 10));
+            sum = 0;
+          }
+        }
+        console.log(averagePowerSavingPercentage);
+        setData(averagePowerSavingPercentage);
+
         // setDataLoaded(true);
         // console.log("Data Fetched", response.data)
         // console.log(data.data)
@@ -54,10 +72,6 @@ const LineChart = () => {
             y: chartData.data,
           };
         });
-        //get y values from the data to map them in the graph
-        const yValues = chartData.map((chartData) => {
-          return chartData.y/5000*100;
-        });
 
         //get labels from the database to map them in the graph
         const labelValues = chartData.map((chartData) => {
@@ -65,10 +79,16 @@ const LineChart = () => {
             'default', {weekday: 'long'}
           );
         });
-        // console.log(labelValues);
-        //set the data to the corresponding states
-        setData(yValues);
-        setLabelValues(labelValues);
+
+        // create the labels for the chart
+        var labels = [];
+        for (var i = 0; i < labelValues.length; i++) {
+          if (i % 10 === 0) {
+            labels.push(labelValues[i]);
+          }
+        }
+        console.log(labels);
+        setLabelValues(labels);
 
         // console.log("data: ", data);
         setTimeout(() => {
