@@ -108,6 +108,11 @@ function getEnergyDaily() {
 	function parseDate(d) {
 		return [d.getFullYear(),(d.getMonth()+1).toString().padStart(2,'0'),d.getDate().toString().padStart(2,'0')].join('-');
 	}
+	function parsedDateToMilliSeconds(d) {
+		d_n = d+"T00:00:00.000Z";
+		return Date.parse(d_n);
+	}
+
 	try {
 		const r_lights = Axios.get('http://localhost:3001/api/lights');
 		// For every lamp in the list
@@ -169,6 +174,7 @@ function getEnergyDaily() {
 				}
 			}
 		}
+		energyArray.sort((a,b) => parsedDateToMilliSeconds(a.date)-parsedDateToMilliSeconds(b.date)); // ascending order
 		return energyArray;
 	}
 	catch (e) {
