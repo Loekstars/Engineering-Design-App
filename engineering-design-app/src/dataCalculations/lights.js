@@ -3,9 +3,11 @@ import Axios from 'axios';
 const luminance = 2000;	// the lamp's usual luminance when a duty cycle of 100% is used
 const wattage = 24;	// the lamp's wattage (J/s)
 var illuminance_max;	// TODO: set maximum illuminance that can be given
-var illumance_rel = getSomeIlluminance(); // TODO: retrieve relative percentage from slider
+var illuminance_rel = 100; // TODO: retrieve relative percentage from slider
 const stateOn = 1;
 const stateOff = 0;
+
+const slider = require("../pages/LampSettings");
 
 /**
  * Function for setting the luminance of a specific lamp.
@@ -59,8 +61,7 @@ function getEnergyTotal() {
 					else {
 						t2 = Date.parse(r_data[j+1].timestamp); // milliseconds
 					}
-					var lum = r_data[j].luminance;
-					var dc = Math.pow(luminance,lum/100-1); // scale 0-1
+					var dc = r_data[j].luminance;
 					timeOn += dc*(t2-t1)/1000; // seconds 
 					timeTotal += (t2-t1)/1000; // seconds
 				}
@@ -116,8 +117,7 @@ function getEnergyDaily() {
 			for (let j = 0; j < r_data.length; j++) {
 				// If at index j the lamp is on and the lamp is not deleted
 				if (r_data[j].state == stateOn && r_data[j].action != "delete") {
-					var lum = r_data[j].luminance;	// Get the relative luminance value
-					var dc = Math.pow(luminance,lum/100-1);	// Convert into direct current
+					var dc = r_data[j].luminance;	// Get the relative luminance value
 					var d1 = new Date(r_data[j].timestamp);	// Get first date
 					var d2;	// Variable for second date
 					var t1,t2;	// Variables for dates in milliseconds
@@ -177,17 +177,39 @@ function getEnergyDaily() {
 }
 
 function calculateLuminance() {
-	var lum; // TODO: get luminance value of lamps from lights table
-	var sensor_data; // TODO: get latest sensor data from refined data
+	illuminance_rel = slider.getValue();
+	const lights = Axios.get('http://localhost:3001/api/lights');
+	var dc_old = Axios.get('http://localhost:3001/api/brightness');
+	var lum_old = correctedDutyCycleToLuminance(dc_old);
+	var sensor_data = Axios.get('http://localhost:3001/get');
 	var min_data = Math.min(sensor_data.map(object => object.data));
 	var min_data_index = sensor_data.map(object => object.data).indexOf(min_data);
-	var lum_new = lum * illumance_rel/(min_data/illuminance_max);
-	// TODO: upload new luminance to lights table;
+	var lum_new = lum_old * illuminance_rel/(min_data/illuminance_max);
+	var dc_new = luminanceToDutyCycle(lum_new);
+	for (let i = 0; i < lights.length; i++) {
+
+	}
+	// TODO: upload dc_new to lights table;
 }
 
+function rawDutyCycleToLuminance(dc) {
+	return 1+Math.log(dc)/Math.log(luminance);
+}
+
+function correctedDutyCycleToLuminance(dc) {
+	return Math.log(dc*(luminance-1)+1)/Math.log(luminance);
+}
+
+function luminanceToDutyCycle(lum_rel) {
+	var ans_raw = Math.pow(luminance,lum_rel-1);
+	var ans_corrected = (ans_raw-Math.pow(luminance,-1))/(1-Math.pow(luminance,-1));
+	return ans_corrected;
+}
+
+/*
 function calibrate() {
 	// TODO: set all lights to max output (i.e. luminance = 100%)
 	// TODO: wait for min time elapsed before data is aggregated correctly (since mean filter)
 	// TODO: get latest illuminance values from sensor_data
 	// TODO: update illum_max values in sensor table
-}
+}*/
