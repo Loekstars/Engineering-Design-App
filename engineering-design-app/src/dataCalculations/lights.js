@@ -53,8 +53,10 @@ function getEnergyTotal() {
 			var timeO = 0;
 			var timeT = 0;
 			const times = function(t){return t};
-			for (let i = 0; i < r_lights.length; i++) {
-				Axios.get('http://localhost:3001/api/lightrecords?lightid='+r_lights[i]).then(r_data => {
+			const temp = r_lights.length;
+			console.log("TEMP:", temp);
+			for (let i = 0; i < temp; i++) {
+				Axios.get('http://localhost:3001/api/lightrecords').then(r_data => {
 					r_data = r_data.data;
 					for (let j = 0; j < r_data.length; j++) {
 						if (r_data[j].state === stateOn) {

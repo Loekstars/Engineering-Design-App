@@ -46,15 +46,14 @@ app.get('/api/insert', function(req, res) {
 });
 
 app.get('/api/insertBrightness', function(req, res) {
-  const sensor_id = req.query.sensorid;
   const brightness = req.query.brightness;
   const state = req.query.state;
-  console.log(sensor_id, brightness, state);
+  console.log(brightness, state);
   try {
     res.send("Data received");
-    const sql1 = 'UPDATE lights SET light_id='+ sensor_id +', state=' + state + ', luminance='+ brightness +';';
+    const sql1 = 'UPDATE lights SET state=' + state + ', luminance='+ brightness +' WHERE light_id=2;';
     db.query(sql1, (err, result) => {
-      console.log(sensor_id, brightness, state, "Data inserted into Brightness");
+      console.log(brightness, state, "Data inserted into Brightness");
     });
   }
   catch (e) {
@@ -62,15 +61,40 @@ app.get('/api/insertBrightness', function(req, res) {
   }
 });
 
+app.get('/api/insertBrightnessPico', function(req, res) {
+  const sensor_id = req.query.sensorid;
+  const brightness = (2500 - req.query.brightness)*4;
+  const state = req.query.state;
+  console.log(sensor_id, brightness, state);
+  if (!(brightness > 65533)) {
+    try {
+      res.send("Data received");
+      const sql1 = 'UPDATE lights SET state=' + state + ', luminance='+ brightness +' WHERE light_id=1;';
+      db.query(sql1, (err, result) => {
+        console.log(sensor_id, brightness, state, "Data inserted into Brightness PICO");
+      });
+    }
+    catch (e) {
+      next(e);
+    }
+  }
+});
+
 app.get("/api/brightness", async (req, res, next) => {
   try {
     const sqlSelect = "SELECT * FROM lights";
     db.query(sqlSelect, (err, result) => {
-      const brightness = result[0].luminance;
+      const brightnessPico = result[0].luminance;
+      const brightnessApp = result[1].luminance;
       const state = result[0].state;
-      var data = [brightness, state];
-      res.send(data);
-      console.log(data, "Data fetched from api/brightness");
+      var data1 = [brightnessPico, state];
+      var data2 = [brightnessApp, state];
+      if (brightnessPico > brightnessApp) {
+        res.send(data1);
+      } else {
+        res.send(data2);
+      }
+      console.log(data1, data2, "Data fetched from api/brightness");
     });
   }
   catch (e) {
@@ -110,13 +134,12 @@ app.get("/api/lights", (req, res, next) => {
 
 app.get("/api/lightrecords", (req, res, next) => {
   try {
-    const lightid = req.query.lightid;
     var where;
     if (lightid == undefined || lightid == "") {
       where = " ";
     }
     else {
-      where = " WHERE light_id="+lightid+" ";
+      where = " WHERE light_id=1 ";
     }
     const sqlSelect = "SELECT * FROM lights_records"+where+"ORDER BY lights_records.timestamp ASC";
     db.query(sqlSelect, (err, result) => {
