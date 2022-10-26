@@ -44,7 +44,8 @@ const LineChart = () => {
       Axios.get('http://localhost:3001/api/getChartData').then((response) => {
         // calculate the power saving percentage
         var powerSavingPercentage = response.data.map((item) => {
-          return 100 - Math.round((item.luminance / 10000) * 100);
+          var powerSaving = 100 - (Math.round((item.luminance / 10000) * 25)*4);
+          return powerSaving;
         });
 
         // take the average of every 10 datapoints and calculate the average
@@ -53,7 +54,7 @@ const LineChart = () => {
         var sum = 0;
         for (var i = 0; i < powerSavingPercentage.length; i++) {
           sum += powerSavingPercentage[i];
-          if (i % 10 === 0) {
+          if (i % 10 === 0 && i !== 0) {
             averagePowerSavingPercentage.push(Math.round(sum / 10));
             sum = 0;
           }
@@ -82,9 +83,9 @@ const LineChart = () => {
 
         // create the labels for the chart
         var labels = [];
-        for (var i = 0; i < labelValues.length; i++) {
-          if (i % 10 === 0) {
-            labels.push(labelValues[i]);
+        for (var j = 0; j < labelValues.length; j++) {
+          if (j % 10 === 0) {
+            labels.push(labelValues[j]);
           }
         }
         console.log(labels);

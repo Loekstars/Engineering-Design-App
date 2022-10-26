@@ -200,7 +200,6 @@ const Homepage = () => {
                   <div class="py-1" role="none">
                     <a href="/AddLight" onClick={addLight} class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Add Light</a>
                     <a href="/" onClick={removeLight} class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Remove Light</a>
-                    <a href="/" onClick={changeRoom} class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Change room</a>
                   </div>
                 </div>
               </div>
@@ -233,7 +232,7 @@ const Homepage = () => {
               </button>
               <button
                 classname="button-light-2"
-                class="w-24 h-24 outline outline-offset-0 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
+                class=" hidden w-24 h-24 outline outline-offset-0 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
                 onClick={handleClick}
               >
                 <div
@@ -258,7 +257,7 @@ const Homepage = () => {
               </button>
               <button
                 classname="button-light-3"
-                class="w-24 h-24 outline outline-offset-2 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
+                class="hidden w-24 h-24 outline outline-offset-2 outline-1 outline-gray-200 p-2 pb-1 pt-1 rounded-lg"
                 onClick={handleClick}
               >
                 <div
