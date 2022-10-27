@@ -1,4 +1,3 @@
-import { blueGrey } from '@mui/material/colors'
 import React from 'react'
 
 //On this page the user can find information about the team
@@ -43,7 +42,7 @@ const Aboutus = () => {
                     </svg>
                   </div>
                   <div class="text-xs text-center font-bold pt-1">Peter de Bruijne</div>
-                  <div class="text-xs text-center pt-1">Peter de Bruijne</div>
+                  <div class="text-xs text-center pt-1">Database Engineer</div>
                 </div>
               <div
                 classname="button-light-1"
@@ -58,7 +57,7 @@ const Aboutus = () => {
 
                   </div>
                   <div class="text-xs text-center font-bold pt-1">Thijs Egberts</div>
-                  <div class="text-xs text-center pt-1">Thijs Egberts</div>
+                  <div class="text-xs text-center pt-1">Embedded Engineer</div>
                 </div>
               <div
                 classname="button-light-1"
@@ -72,7 +71,7 @@ const Aboutus = () => {
                     </svg>
                   </div>
                   <div class="text-xs text-center font-bold pt-1">Lucca Geldens</div>
-                  <div class="text-xs text-center pt-1">Lucca Geldens</div>
+                  <div class="text-xs text-center pt-1">Software Engineer</div>
                 </div>
               <div
                 classname="button-light-1"
@@ -87,7 +86,7 @@ const Aboutus = () => {
 
                   </div>
                   <div class="text-xs text-center font-bold pt-1">Babette van Leeuwen</div>
-                  <div class="text-xs text-center pt-1">Babette van Leeuwen</div>
+                  <div class="text-xs text-center pt-1">PR Manager</div>
                 </div>
               <div
                 classname="button-light-1"
@@ -101,7 +100,7 @@ const Aboutus = () => {
                     </svg>
                   </div>
                   <div class="text-xs text-center font-bold pt-1">Jarne Sikkema</div>
-                  <div class="text-xs text-center pt-1">Jarne Sikkema</div>
+                  <div class="text-xs text-center pt-1">Mechanical Engineer</div>
                 </div>
               <div
                 classname="button-light-1"
@@ -115,7 +114,7 @@ const Aboutus = () => {
                     </svg>
                   </div>
                   <div class="text-xs text-center font-bold pt-1">Koen Verhoof</div>
-                  <div class="text-xs text-center pt-1">Koen Verhoof</div>
+                  <div class="text-xs text-center pt-1">Light Engineer</div>
               </div>
           </div>
         </div>

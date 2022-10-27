@@ -14,7 +14,6 @@ import * as lights from "../dataCalculations/lights.js";
 const Homepage = () => {
   const [toggle_status, setToggle] = useState(false);
   const [toggle_dropdown, setDropdown] = useState(false);
-  const wattage = 24;	// the lamp's wattage (J/s)
   const stateOn = 1;
 
   //get the latest state from the table
@@ -75,30 +74,10 @@ const Homepage = () => {
     setDropdown(!toggle_dropdown);
   };
   
-  const [powerSaved, setPowerSaved] = useState(0);
+  const [powerSaved, setPowerSaved] = useState("16w");
   const [loading, setLoading] = React.useState(true);
 
-      //Create loading animation and wait for loading animation to end to show chart
-      useEffect(() => {
-        Axios.get('http://192.168.0.140:3001/api/powerSaving').then((response) => {
-            setPowerSaved(response.data);
-            console.log("Data Fetched")
-            setTimeout(() => {
-                setLoading(false);
-            }, 1);
 
-            console.log(response.data)
-        }).catch((err) => {
-              setTimeout(() => {
-                setLoading(false);
-            }, 1);
-            //const energyArray = lights.getEnergyDaily();
-            //console.log(energyArray);
-            const wattSaved = 16;
-            setPowerSaved(wattSaved + "w");
-            console.log(err);
-        });
-      }, []);
   return (
     <div classname="App">
       <div class="container mx-auto align-center w-screen">
@@ -124,10 +103,7 @@ const Homepage = () => {
                   class="flex flex-auto justify-center items-center h-10"
                 >
                   <div class="text-center font-medium text-widget-blue text-xl pt-2">
-                    {loading ? <ClimbingBoxLoader 
-                    color="#2057ff"
-                    size={7}
-                    />: powerSaved}
+                    {powerSaved}
                   </div>
                 </div>
                 <div class="text-xs text-center pt-3">
