@@ -73,12 +73,23 @@ const LineChart = () => {
             y: chartData.data,
           };
         });
+        console.log("Chartdata: ", chartData);
 
         //get labels from the database to map them in the graph
         const labelValues = chartData.map((chartData) => {
-          return chartData.timestamp.toLocaleString(
-            'default', {weekday: 'long'}
-          );
+          // get the hours and minutes from the timestamp
+          var hours = chartData.timestamp.getHours();
+          var minutes = chartData.timestamp.getMinutes();
+          // add a 0 in front of the minutes if the minutes are less than 10
+          if (minutes < 10) {
+            minutes = "0" + minutes;
+          }
+          // return the hours and minutes
+          return hours + ":" + minutes;
+
+          // return chartData.timestamp.toLocaleString(
+          //   'default', {weekday: 'long'}
+          // );
         });
 
         // create the labels for the chart

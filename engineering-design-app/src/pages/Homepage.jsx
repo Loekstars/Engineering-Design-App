@@ -17,6 +17,21 @@ const Homepage = () => {
   const wattage = 24;	// the lamp's wattage (J/s)
   const stateOn = 1;
 
+  //get the latest state from the table
+  useEffect(() => {
+    Axios.get("http://localhost:3001/api/brightness").then((response) => {
+      const data = response.data;
+      console.log("data", response.data[1]);
+      if(data[1] === 1){
+        setToggle(true);
+      }else{
+        setToggle(false);
+      }
+      setToggle(response.data[0].state);
+    });
+  }, []);
+
+
   const onLongPress = () => {
     window.location.href="/Lamp";
     console.log('longpress is triggered');
@@ -28,7 +43,19 @@ const Homepage = () => {
   };
   //TODO : Fix status
   const handleClick = () => {
+    var state = 0;
+    // set the state in the lights table to 1 with the latest value so only override the state
+    if(toggle_status){
+      state = 1;
+    }
+    var url = "http://localhost:3001/api/brightness?buttonState="+state;
+    console.log(url);
+    Axios.get(url, {
+      state: stateOn,
+    });
     setToggle(!toggle_status);
+    console.log("toggle status is: " + toggle_status);
+    // setToggle(!toggle_status);
     // if (lightStates.every((element) => element === true)) {
     // }
   };

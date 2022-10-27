@@ -80,15 +80,52 @@ app.get('/api/insertBrightnessPico', function(req, res) {
   }
 });
 
+//create a global variable
 app.get("/api/brightness", async (req, res, next) => {
+  // get the data from state parameter
+
+  // if (req.query.state != NaN) {
+  //   const buttonState = parseInt(req.query.buttonState);
+  //   console.log(buttonState);
+  // }
+  // // buttonState = parseInt(req.query.buttonState);
+  // console.log(buttonState);
   try {
     const sqlSelect = "SELECT * FROM lights";
     db.query(sqlSelect, (err, result) => {
       const brightnessPico = result[0].luminance;
       const brightnessApp = result[1].luminance;
+      //get the old state
       const state = result[0].state;
       var data1 = [brightnessPico, state];
       var data2 = [brightnessApp, state];
+      const buttonState = parseInt(req.query.buttonState);
+      console.log(state, buttonState);
+      // if button state is equal to 1 or 0, then update the state
+      
+      if (buttonState == 1 || buttonState == 0) {
+        console.log("1")
+        data1[1] = buttonState;
+        data2[1] = buttonState;
+        const sqlUpdate = "UPDATE lights SET state=" + buttonState + " WHERE light_id=1 OR light_id=2;";
+        db.query(sqlUpdate, (err, result) => {
+          console.log("Updated state");
+        });
+      } else {
+        console.log("2")
+        data1[1] = state;
+        data2[1] = state;
+      }
+
+      // if (buttonState == 1) {
+      //   data1[1] = buttonState;
+      //   data2[1] = buttonState;
+      //   console.log(buttonState);
+      // } else {
+      //   data1[1] = state;
+      //   data2[1] = state;
+      // }
+
       if (brightnessPico > brightnessApp) {
         res.send(data1);
       } else {
@@ -161,7 +198,18 @@ app.get("/api/lightrecords", (req, res, next) => {
     next(e);
   }
 });
-//#endregion
+
+// here the request about the getLatestState is handled, this returns the latest state from the database lights
+app.get("/api/getLatestState", (req, res, next) => {
+  try {
+    const sqlSelect = "SELECT state FROM lights_records ORDER BY timestamp DESC LIMIT 1";
+    db.query(sqlSelect, (err, result) => {
+      res.send(result);
+      });
+    } catch (e) {
+      next(e);
+    }
+  });
 
 app.get("/", async (req, res, next) => {
   try {
