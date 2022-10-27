@@ -10,7 +10,8 @@ ssid = 'raspberry Hotspot' #wifi network name
 password = 'Wow this hotspot is so secure :)' #wifi password
 
 led = Pin(13, Pin.OUT)
-buttonState = True
+buttonState = '1'
+oldButtonState = buttonState
 
 #set static ip
 #sta_if.active(True)
@@ -56,7 +57,7 @@ def open_socket(_ip):
 
 #start a web server
 def serve(_connection):
-    global buttonState
+    global buttonState, oldButtonState
     while True:
         client,addr = _connection.accept()
         print('Client connected from: ',addr)
@@ -72,7 +73,11 @@ def serve(_connection):
             #this is a request for a value
             #get the brightness value and state of the lamp from the app
             buttonState = splitStr[1]
-            url = "http://192.168.137.199:3001/api/brightness"
+            if buttonState == oldButtonState:
+                url = "http://192.168.137.199:3001/api/brightness"
+            else:
+                url = "http://192.168.137.199:3001/api/brightness?buttonState="+buttonState
+                oldButtonState = buttonState
             print('sending request to API')
             r = urequests.get(url)#get the brightness and buttonstate in a json format
             json = r.json()
@@ -92,7 +97,7 @@ def serve(_connection):
             
             r.close()
             response = str(brightness) + ' ' + str(buttonState)
-            print('response: ' +response + '\n's)
+            print('response: ' +response + '\n')
         elif splitStr[0] == 'send':
             #this is a sensor value that gets send
             response = 'MSGRECIEVED'#message recieved
@@ -100,7 +105,7 @@ def serve(_connection):
             #send the value to the database
             sensorid = splitStr[2]#the third part is the sensor id
             url = "http://192.168.137.199:3001/api/insert?sensorid="+ sensorid +"&data="
-        
+            
             if buttonState:
                 sensor_measurement = splitStr[1]#get the second part of the message and convert it to a percentage
             elif not buttonState:
@@ -108,7 +113,11 @@ def serve(_connection):
             else:
                 print('buttonstate invalid')
                 sensor_measurement = 65535#in case of an error turn off the lamp
+            
+            brightnessPercentage = str(round(int(sensor_measurement)/65535*10000))#a 10000 percentage of the brightness
+            url2 = "http://192.168.137.199:3001/api/insertBrightnessPico?sensorid="+sensorid + "&brightness=" + brightnessPercentage + "&state=1"
             dataURL = url + str(sensor_measurement)
+            dataURL = url2
                 
             print("Sending to API...\n")
             r = urequests.head(dataURL)

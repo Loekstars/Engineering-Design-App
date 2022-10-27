@@ -5,13 +5,14 @@ import machine
 from machine import Pin, PWM
 import urequests
 import _thread
+from picozero import Button#this is used to make the button presses easier
 
 ssid = 'raspberry Hotspot' #wifi network name
 password = 'Wow this hotspot is so secure :)' #wifi password
 serverIP = '192.168.137.30'
 
 lamp = PWM(Pin(13))
-button = Pin(6, Pin.IN, Pin.PULL_DOWN)#light switch
+button = Button(18)#light switch
 lampState = True#toggle the lamp
 debounceTime = 0#for removing noise from the button presses
 lamp.freq(1000)
@@ -29,6 +30,12 @@ currentButtonState = 0
 # 
 # button.irq(trigger=Pin.IRQ_RISING, handler=callBack)#do an interrupt when the light switch is pressed
 
+#switch lamp state when the button gets pressed
+def buttonHandler():
+    global lampState, DUTY
+    lampState = False if lampState else True
+    lamp.duty_u16(DUTY) if lampState else lamp.duty_u16(0)#set the duty to the duty or turn the lamp off
+
 #the second thread
 def second_thread(lampUpdateInterval):
     global currentButtonState, lampState, DUTY
@@ -37,6 +44,7 @@ def second_thread(lampUpdateInterval):
             #check for button press
             lastButtonState = currentButtonState
             currentButtonState = button.value()
+            print(button.value())
             #print(str(lastButtonState) + str(currentButtonState))
         
             if lastButtonState and not currentButtonState:
@@ -122,13 +130,19 @@ def sendData(updateInterval):
             print('MESG ERROR not a valid lampstate')
         
         s.close()
+        #update duty
+        if lampState:
+            lamp.duty_u16(DUTY)
+        else:
+            lamp.duty_u16(0)#turn off the lamp
+        
         sleep(updateInterval)
 
 #main code
 try:
     ip = connect(ssid, password)
-    
-    _thread.start_new_thread(second_thread, (1,))#start the sensor thread
+    button.when_pressed = buttonHandler#call the switching method when
+    #_thread.start_new_thread(second_thread, (1,))#start the sensor thread
     sendData(2)
 except KeyboardInterrupt:
     machine.reset()

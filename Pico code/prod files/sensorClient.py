@@ -28,7 +28,7 @@ def second_thread(measureInterval):
             #lock.acquire()#aquire a lock so we don't get threading problems
             val = sensor.luminance(BH1750.ONCE_HIRES_1)
             light_vals.append(val)#add the light to the list
-            if len(light_vals) > 10:
+            if len(light_vals) > 5:
                 light_vals.pop(0)
             #print(light_vals)
             #print(val)
