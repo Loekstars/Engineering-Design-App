@@ -29,7 +29,7 @@ const LampSettings = () => {
             setValue(50);
             console.log(err);
         });
-      }, []);
+      });
 
   return (
     <div className='App'>
