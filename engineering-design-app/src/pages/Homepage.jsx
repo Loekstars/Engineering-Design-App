@@ -73,7 +73,7 @@ const Homepage = () => {
   };
   
   // Placeholder for the widget
-  const [powerSaved, setPowerSaved] = useState("16w");
+  const [powerSaved] = useState("16w");
 
   // Here html is returned to the app
   return (

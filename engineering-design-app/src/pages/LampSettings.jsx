@@ -11,7 +11,7 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 const LampSettings = () => {
   // const [value, setValue] = React.useState(50);
   const [loading, setLoading] = React.useState(true);
-  const [value, setValue] = React.useState(50);
+  const [setValue] = React.useState(50);
 
       //Create loading animation and wait for loading animation to end to show chart
       useEffect(() => {
