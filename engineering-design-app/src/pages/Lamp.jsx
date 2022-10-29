@@ -28,6 +28,8 @@ const Lamp = () => {
         });
       }, []);
 
+  // This function is called when the slider is moved
+  // It sends the new brightness value to the database
   function handleChange(value) {
     setLampBrightness(value);
     const val = value *100;

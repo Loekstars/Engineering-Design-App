@@ -6,7 +6,7 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 
 //This is a page where the user can change settings for the lamp (TBC)
 
-
+// NOT USED
 
 const LampSettings = () => {
   // const [value, setValue] = React.useState(50);

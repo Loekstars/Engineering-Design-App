@@ -3,15 +3,12 @@ import { useState } from "react";
 import useLongPress from "../components/useLongPress";
 import { useEffect } from "react";
 import Axios from "axios";
-import ClimbingBoxLoader  from "react-spinners/ClimbingBoxLoader";
-// const lights = require("../dataCalculations/lights.js");
-import * as lights from "../dataCalculations/lights.js";
-
-//TODO : Set state of on-offtoggle-state-ON/OFF
 
 // const lightStates = new Array(3).fill(false);
 
+// Here the homepage component is defined
 const Homepage = () => {
+  // The state of the lights is stored in the lightStates array
   const [toggle_status, setToggle] = useState(false);
   const [toggle_dropdown, setDropdown] = useState(false);
   const stateOn = 1;
@@ -30,23 +27,25 @@ const Homepage = () => {
     });
   }, []);
 
-
+  // Here the functionality of the long press is defined
   const onLongPress = () => {
     window.location.href="/Lamp";
     console.log('longpress is triggered');
   };
 
+  // Here the functionality of the long press is defined 
   const defaultOptions = {
     shouldPreventDefault: true,
     delay: 500,
   };
-  //TODO : Fix status
+  // Here the short press is defined
   const handleClick = () => {
     var state = 0;
     // set the state in the lights table to 1 with the latest value so only override the state
     if(toggle_status){
       state = 1;
     }
+    // fetch the latest state from the database
     var url = "http://localhost:3001/api/brightness?buttonState="+state;
     console.log(url);
     Axios.get(url, {
@@ -65,19 +64,18 @@ const Homepage = () => {
   const removeLight = () => {
   };
 
-  const changeRoom = () => {
-  };
-  
+  // Here the long press is defined
   const longPressEvent = useLongPress(onLongPress, handleClick, defaultOptions);
 
+  // Here the dropdown menu is defined
   const showDropdown = () => {
     setDropdown(!toggle_dropdown);
   };
   
+  // Placeholder for the widget
   const [powerSaved, setPowerSaved] = useState("16w");
-  const [loading, setLoading] = React.useState(true);
 
-
+  // Here html is returned to the app
   return (
     <div classname="App">
       <div class="container mx-auto align-center w-screen">
