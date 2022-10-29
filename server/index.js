@@ -45,6 +45,7 @@ app.get('/api/insert', function(req, res) {
   }
 });
 
+// data can be sent to the database using the following url
 app.get('/api/insertBrightness', function(req, res) {
   const brightness = req.query.brightness;
   const state = req.query.state;
@@ -61,12 +62,15 @@ app.get('/api/insertBrightness', function(req, res) {
   }
 });
 
+// data can be sent to the database using the following url
 app.get('/api/insertBrightnessPico', function(req, res) {
   const sensor_id = req.query.sensorid;
+  // calculate brightness from sensor data
   const brightness = 10000 -  (Math.round((50*Math.log(req.query.brightness)/150)*100))*40;
   console.log("brightness: ", brightness)
   const state = req.query.state;
   console.log(sensor_id, brightness, state);
+  // insert data into database
   if (!(brightness > 65533)) {
     try {
       res.send("Data received");
@@ -83,15 +87,8 @@ app.get('/api/insertBrightnessPico', function(req, res) {
 
 //create a global variable
 app.get("/api/brightness", async (req, res, next) => {
-  // get the data from state parameter
-
-  // if (req.query.state != NaN) {
-  //   const buttonState = parseInt(req.query.buttonState);
-  //   console.log(buttonState);
-  // }
-  // // buttonState = parseInt(req.query.buttonState);
-  // console.log(buttonState);
   try {
+    // get data from database
     const sqlSelect = "SELECT * FROM lights";
     db.query(sqlSelect, (err, result) => {
       const brightnessPico = result[0].luminance;
@@ -118,15 +115,6 @@ app.get("/api/brightness", async (req, res, next) => {
         data2[1] = state;
       }
 
-      // if (buttonState == 1) {
-      //   data1[1] = buttonState;
-      //   data2[1] = buttonState;
-      //   console.log(buttonState);
-      // } else {
-      //   data1[1] = state;
-      //   data2[1] = state;
-      // }
-
       if (brightnessPico > brightnessApp) {
         res.send(data1);
       } else {
@@ -140,6 +128,7 @@ app.get("/api/brightness", async (req, res, next) => {
   }
 });
 
+// here the data for the graph is fetched from the database and returned to the app
 app.get("/api/getChartData", async (req, res, next) => {
   try {
     const sqlSelect = 'SELECT * FROM lights_records WHERE state=1 AND luminance > 200 LIMIT 200';
@@ -159,23 +148,7 @@ app.get("/api/getChartData", async (req, res, next) => {
 });
 
 
-// -------------------------
-// Dit hoeft niet aangezien de database t niet berekent maar de app zelf, functie zit in lights.js maar weet niet goed hoe ik dit moet toepassen in de app 
-// -------------------------
-/*app.get("/api/powerSaved", async (req, res, next) => {
-  try {
-    //TODO: change the query to get the power saved from the database @peter
-    const sqlSelect = "SELECT luminance FROM lights ORDER BY `light_id` DESC LIMIT 1";
-    db.query(sqlSelect, (err, result) => {
-      res.send(result);
-    });
-  }
-  catch (e) {
-    next(e);
-  }
-});*/
-
-//#region List of lights and light records selection
+// region List of lights and light records selection
 app.get("/api/lights", (req, res, next) => {
   try {
     const sqlSelect = "SELECT DISTINCT light_id FROM lights_records";
@@ -212,6 +185,7 @@ app.get("/api/getLatestState", (req, res, next) => {
     }
   });
 
+// main page for the API
 app.get("/", async (req, res, next) => {
   try {
     res.send("Database is running succesfully!");
@@ -223,6 +197,7 @@ app.get("/", async (req, res, next) => {
   
 });
 
+// setup the server
 app.listen(port, () => {
   console.log("Server started on port 3001");
 });

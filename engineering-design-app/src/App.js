@@ -11,6 +11,7 @@ import Statistics from './pages/Statistics';
 import AddLight from './pages/AddLight';
 import Debug from './pages/Debug';
 
+// Here we define the routes for the different pages
 
 export default function App() {
   return (

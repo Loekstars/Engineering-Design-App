@@ -6,18 +6,6 @@ import HashLoader from "react-spinners/HashLoader";
 import { Chart, registerables} from 'chart.js';
 Chart.register(...registerables);
 
-// const data1 = {
-//   labels: labels,
-//   datasets: [
-//     {
-//       label: "Power saving percentage",
-//       backgroundColor: "rgb(255, 99, 132)",
-//       borderColor: "rgb(255, 99, 132)",
-//       data: getDataArray(),
-//     },
-//   ],
-// };
-
 const options = {
   animation: {
     duration: 150,
@@ -62,9 +50,6 @@ const LineChart = () => {
         console.log(averagePowerSavingPercentage);
         setData(averagePowerSavingPercentage);
 
-        // setDataLoaded(true);
-        // console.log("Data Fetched", response.data)
-        // console.log(data.data)
 
         //map the data to a new array
         const chartData = response.data.map((chartData) => {
@@ -86,10 +71,6 @@ const LineChart = () => {
           }
           // return the hours and minutes
           return hours + ":" + minutes;
-
-          // return chartData.timestamp.toLocaleString(
-          //   'default', {weekday: 'long'}
-          // );
         });
 
         // create the labels for the chart
@@ -102,7 +83,6 @@ const LineChart = () => {
         console.log(labels);
         setLabelValues(labels);
 
-        // console.log("data: ", data);
         setTimeout(() => {
             setLoading(false);
         }, 1000);
@@ -115,6 +95,7 @@ const LineChart = () => {
       });
     }, []);
 
+    // set the data for the chart
     const dataChart = {
       labels: labelValues,
       datasets: [

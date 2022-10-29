@@ -6,12 +6,12 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 
 //This is a page where the user can change settings for the lamp (TBC)
 
-
+// NOT USED
 
 const LampSettings = () => {
   // const [value, setValue] = React.useState(50);
   const [loading, setLoading] = React.useState(true);
-  const [value, setValue] = React.useState(50);
+  const [setValue] = React.useState(50);
 
       //Create loading animation and wait for loading animation to end to show chart
       useEffect(() => {
@@ -29,7 +29,7 @@ const LampSettings = () => {
             setValue(50);
             console.log(err);
         });
-      }, []);
+      });
 
   return (
     <div className='App'>
