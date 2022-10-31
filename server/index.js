@@ -66,7 +66,7 @@ app.get('/api/insertBrightness', function(req, res) {
 app.get('/api/insertBrightnessPico', function(req, res) {
   const sensor_id = req.query.sensorid;
   // calculate brightness from sensor data
-  const brightness = 10000 -  (Math.round((50*Math.log(req.query.brightness)/150)*100))*40;
+  const brightness = 10000 -  (Math.round((4*Math.log(req.query.brightness)/3)*1000));
   console.log("brightness: ", brightness)
   const state = req.query.state;
   console.log(sensor_id, brightness, state);
