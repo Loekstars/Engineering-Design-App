@@ -4,68 +4,31 @@ from time import sleep
 import machine
 from machine import Pin, PWM
 import urequests
-import _thread
-from picozero import Button#this is used to make the button presses easier
+from picozero import Button, pico_led#this is used to make the button presses easier
 
+#the ssid and password of the hotspot
 ssid = 'raspberry Hotspot' #wifi network name
 password = 'Wow this hotspot is so secure :)' #wifi password
-serverIP = '192.168.137.30'
+serverIP = '192.168.137.30'#ip adress of the master pico
 
-lamp = PWM(Pin(13))
+#set up the pins for the IO
+lamp = PWM(Pin(17))
 button = Button(18)#light switch
 lampState = True#toggle the lamp
-debounceTime = 0#for removing noise from the button presses
 lamp.freq(1000)
 DUTY = 65535#set the initial duty to full brightness
-currentButtonState = 0
 
-#interrupt handler function for the button press
-# def callBack(pin):
-#     if (time.tick_ms()-debounceTime) > 500:#filter out extremely fast accidental button presses
-#         if lampState:
-#             lampState = False
-#         else:
-#             lampState = True
-#         debounceTime = time.tick_ms()
-# 
-# button.irq(trigger=Pin.IRQ_RISING, handler=callBack)#do an interrupt when the light switch is pressed
+#status blinking function
+def blinkLed(blinks, interval):
+    for i in range(0,2*blinks):
+        pico_led.toggle()
+        sleep(interval/2)
 
 #switch lamp state when the button gets pressed
 def buttonHandler():
     global lampState, DUTY
     lampState = False if lampState else True
     lamp.duty_u16(DUTY) if lampState else lamp.duty_u16(0)#set the duty to the duty or turn the lamp off
-
-#the second thread
-def second_thread(lampUpdateInterval):
-    global currentButtonState, lampState, DUTY
-    try:#try catch because threads interact a bit weirdly with interrupts and this probably helps with closing the entire program
-        while True:            
-            #check for button press
-            lastButtonState = currentButtonState
-            currentButtonState = button.value()
-            print(button.value())
-            #print(str(lastButtonState) + str(currentButtonState))
-        
-            if lastButtonState and not currentButtonState:
-                if (time.tick_ms()-debounceTime) > 300:#filter out extremely fast accidental button presses
-                    print('button pressed')
-                    if lampState:
-                        lampState = False
-                    else:
-                        lampState = True
-                    debounceTime = time.tick_ms()
-                
-            #update the duty
-            if lampState:
-                #xprint(DUTY)
-                lamp.duty_u16(DUTY)
-            else:
-                lamp.duty_u16(0)#turn off the lamp
-            #sleep(lampUpdateInterval)
-            sleep(0.01)
-    except KeyboardInterrupt:
-        machine.reset()
 
 #connect to a wlan and return the ip adress
 def connect(_ssid, _password):
@@ -86,6 +49,7 @@ def connect(_ssid, _password):
         raise RuntimeError('network connection failed')
     else:
         print('connected')
+        blinkLed(3,0.5)
         status = wlan.ifconfig()
         ip = status[0]
         print ('ip: ' + ip)
@@ -94,15 +58,17 @@ def connect(_ssid, _password):
 #send the data requests
 def sendData(updateInterval):
     global lampState, DUTY#this is needed because python is stupid with assigning scope to variables
+    
     while True:
         ai = socket.getaddrinfo(serverIP, 80)
         addr = ai[0][-1]
         s = socket.socket()
         s.connect(addr)
-        #make the message to request a light value back
+        blinkLed(2,0.5)
         
+        #make the message to request a light value back
         if lampState:
-            mesg = 'req 1'
+            mesg = 'req 1'#lamp is on
         else:
             mesg = 'req 0'
         s.send(mesg)#send this as a message to the master
@@ -122,6 +88,8 @@ def sendData(updateInterval):
             DUTY = _duty
         else:
             print('MESG ERROR duty out of range')
+        
+        #turn on/off the lamp based on the app
         if splitStr[1] == 'True':
             lampState = True
         elif splitStr[1] == 'False':
@@ -130,6 +98,7 @@ def sendData(updateInterval):
             print('MESG ERROR not a valid lampstate')
         
         s.close()
+        
         #update duty
         if lampState:
             lamp.duty_u16(DUTY)
@@ -142,7 +111,6 @@ def sendData(updateInterval):
 try:
     ip = connect(ssid, password)
     button.when_pressed = buttonHandler#call the switching method when
-    #_thread.start_new_thread(second_thread, (1,))#start the sensor thread
     sendData(2)
 except KeyboardInterrupt:
     machine.reset()

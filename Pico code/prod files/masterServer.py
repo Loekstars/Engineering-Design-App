@@ -4,27 +4,27 @@ from time import sleep
 import machine
 from machine import Pin
 import urequests
+from picozero import pico_led
 
-
+#ssid and password of the hotspot
 ssid = 'raspberry Hotspot' #wifi network name
 password = 'Wow this hotspot is so secure :)' #wifi password
 
-led = Pin(13, Pin.OUT)
 buttonState = '1'
 oldButtonState = buttonState
 
-#set static ip
-#sta_if.active(True)
-#sta_if.ifconfig(('192.168.137.215', '255.255.255.0', 80,'8.8.8.8'))
-#print(sta_if.ifconfig())
-#('192.168.137.30', '255.255.255.0', '192.168.137.1', '192.168.137.1')
-
+#status blinking function
+def blinkLed(blinks, interval):
+    for i in range(0,2*blinks):
+        pico_led.toggle()
+        sleep(interval/2)
+        
 #connect to a wlan and return the ip adress
 def connect(_ssid, _password):
     #Connect to WLAN
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
-    wlan.ifconfig(('192.168.137.30', '255.255.255.0', '192.168.137.1', '192.168.137.1'))#set static ip adress?
+    wlan.ifconfig(('192.168.137.30', '255.255.255.0', '192.168.137.1', '192.168.137.1'))#set static ip adress
     wlan.connect(_ssid, _password)
     #wait for connection
     max_wait = 10
@@ -39,11 +39,11 @@ def connect(_ssid, _password):
         raise RuntimeError('network connection failed')
     else:
         print('connected')
+        blinkLed(3, 0.5)
+        
         status = wlan.ifconfig()
         print(status)
         ip = status[0]
-        print ('ip: ' + ip)
-        led.value(1)
         return ip
 
 #open a socket on port 80
@@ -58,18 +58,20 @@ def open_socket(_ip):
 #start a web server
 def serve(_connection):
     global buttonState, oldButtonState
+    
     while True:
+        #accept connections
         client,addr = _connection.accept()
         print('Client connected from: ',addr)
         request = client.recv(1024)
         request = str(request)
-        #print(request)
         
         #process the request
         splitStr = request[2:len(request)-1]#remove the ' and b
         splitStr = splitStr.split(' ') 
         
         if splitStr[0] == 'req':
+            blinkLed(2, 0.5)
             #this is a request for a value
             #get the brightness value and state of the lamp from the app
             buttonState = splitStr[1]
@@ -82,9 +84,9 @@ def serve(_connection):
             r = urequests.get(url)#get the brightness and buttonstate in a json format
             json = r.json()
             
-            print(json)#[0] brightness, [1] state
+            #print(json)#[0] brightness, [1] state
             
-            #todo process the stuff from the response here
+            #process the stuff from the response here
             if json[1] == 1:
                 buttonState = True
             elif json[1] == 0:
@@ -98,13 +100,14 @@ def serve(_connection):
             r.close()
             response = str(brightness) + ' ' + str(buttonState)
             print('response: ' +response + '\n')
+            
         elif splitStr[0] == 'send':
+            blinkLed(4,0.5)
             #this is a sensor value that gets send
             response = 'MSGRECIEVED'#message recieved
                 
             #send the value to the database
             sensorid = splitStr[2]#the third part is the sensor id
-            url = "http://192.168.137.199:3001/api/insert?sensorid="+ sensorid +"&data="
             
             if buttonState:
                 sensor_measurement = splitStr[1]#get the second part of the message and convert it to a percentage
@@ -116,7 +119,6 @@ def serve(_connection):
             
             brightnessPercentage = str(round(int(sensor_measurement)/65535*10000))#a 10000 percentage of the brightness
             url2 = "http://192.168.137.199:3001/api/insertBrightnessPico?sensorid="+sensorid + "&brightness=" + brightnessPercentage + "&state=1"
-            dataURL = url + str(sensor_measurement)
             dataURL = url2
                 
             print("Sending to API...\n")
